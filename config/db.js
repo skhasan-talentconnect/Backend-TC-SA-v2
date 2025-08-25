@@ -4,7 +4,7 @@ import config from "config";
 import dotenv from 'dotenv';
 dotenv.config();
 
-const mongodbUrl = config.get("mongodb.url");
+const mongodbUrl = process.env.MONGODB_URL || config.get("mongodb.url");
 
 const connectDB = async () => {
     try {
