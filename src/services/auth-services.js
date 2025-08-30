@@ -2,6 +2,19 @@ import jwt from 'jsonwebtoken';
 import Auth from '../models/auth-model.js';
 import OTP from '../models/otp-model.js';
 import { sendVerificationEmail, sendOtpToEmail } from '../utils/email.js';
+import mongoose from 'mongoose';
+
+export const getAuth = async ({authId}) => {
+  const auth = await Auth.findById(new mongoose.Types.ObjectId(authId));
+
+  if (!auth) {
+    throw {
+        status: 404,
+        message: 'Auth data not found',
+      };
+  }
+  return { auth };
+};
 
 export const registerUserService = async ({ email, password, userType, authProvider }) => {
   const existingAuth = await Auth.findOne({ email });

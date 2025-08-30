@@ -1,6 +1,19 @@
 import * as AuthService from '../services/auth-services.js';
 import { emailTemplates } from '../utils/email.js';
 
+export const getAuth = async (req, res) => {
+  try {
+    const result = await AuthService.getAuth(req.params);
+    res.status(201).json({
+      status: 'success',
+      message: `Auth data fetched successfully`,
+      data: result.auth,
+    });
+  } catch (error) {
+    res.status(error.status || 500).json({ status: 'failed', message: error.message });
+  }
+}
+
 export const registerUser = async (req, res) => {
   try {
     const result = await AuthService.registerUserService(req.body);
