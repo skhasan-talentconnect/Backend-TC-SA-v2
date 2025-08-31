@@ -5,6 +5,7 @@ import {
   updateSchoolInfoService,
   deleteSchoolService
 } from '../services/school-services.js';
+import { toSchoolCardModels } from '../utils/utils.js';
 
 //Add school
 export const addSchool = async (req, res) => {
@@ -52,10 +53,11 @@ export const getSchoolsByStatus = async (req, res) => {
 
     const schools = await getSchoolsByStatusService(status);
 
+    const mappedSchools = await toSchoolCardModels(schools);
     res.status(200).json({
       status: 'success',
       message: `Fetched schools with status: ${status}`,
-      data: schools
+      data: mappedSchools,
     });
   } catch (error) {
     res.status(500).json({
