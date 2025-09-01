@@ -29,7 +29,7 @@ export const getSchoolByIdService = async (schoolId) => {
 };
 
 // Get schools by status
-export const getSchoolsByStatusService = async (status) => {
+export const getSchoolsByStatusService = async (status, filter) => {
   const allowedStatus = ['pending', 'accepted', 'rejected'];
      if (!allowedStatus.includes(status)) {
     const error = new Error('Invalid status. Must be pending, accepted, or rejected.');
@@ -37,8 +37,17 @@ export const getSchoolsByStatusService = async (status) => {
     throw error;
   }
 
+    // Base query
+  const query = {};
 
-  const schools = await School.find({ status });
+    if (filter && Object.keys(filter).length > 0) {
+    for (const [key, value] of Object.entries(filter)) {
+      query[key] = new RegExp(`^${value}$`, 'i'); // exact match, case-insensitive
+    }
+  }
+
+  const schools = await School.find({ status: status, ...query });
+  console.log(query);
   
  if (!schools || schools.length === 0) {
     const error = new Error(`No schools found with status: ${status}`);

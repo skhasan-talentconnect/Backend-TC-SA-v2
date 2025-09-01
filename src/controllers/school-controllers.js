@@ -50,8 +50,9 @@ export const getSchoolsByStatus = async (req, res) => {
   try {
 
     const { status } = req.params; 
+    const filters = req.query; 
 
-    const schools = await getSchoolsByStatusService(status);
+    const schools = await getSchoolsByStatusService(status, filters);
 
     const mappedSchools = await toSchoolCardModels(schools);
     res.status(200).json({
