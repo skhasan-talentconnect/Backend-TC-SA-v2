@@ -47,7 +47,6 @@ export const getSchoolsByStatusService = async (status, filter) => {
   }
 
   const schools = await School.find({ status: status, ...query });
-  console.log(query);
   
  if (!schools || schools.length === 0) {
     const error = new Error(`No schools found with status: ${status}`);
