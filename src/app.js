@@ -9,6 +9,7 @@ import applicationRoutes from './routes/application-routes.js';
 import reviewRoutes from './routes/review-routes.js'
 import openAIRoutes from './routes/ai-routes.js';
 import formRoutes from './routes/form-routes.js'
+import notificationRoutes from './routes/notification-routes.js'
 
 dotenv.config();
 connectDB();
@@ -25,6 +26,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin', schoolRoutes);
 app.use('/api/applications', applicationRoutes);
+app.use('/api/notifications', notificationRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/form', formRoutes);
 app.use('/api', openAIRoutes); 
