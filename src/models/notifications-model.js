@@ -20,8 +20,9 @@ const notificationSchema = new mongoose.Schema({
     },
     notificationType:{
         type: String,
-        enum: ['discovery', 'accepted', 'rejected', 'review', 'submitted'],
+        enum: ['Discovery', 'Accepted', 'Rejected', 'Reviewed', 'Submitted', 'Others'],
         required: false,
+        default: 'others',
     },
     data: {
         type: Object,

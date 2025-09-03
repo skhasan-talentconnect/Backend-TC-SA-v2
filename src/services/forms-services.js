@@ -1,41 +1,48 @@
 import Form from "../models/form-model.js";
+import Student from "../models/user-model.js";
+import School from "../models/school-model.js";
+import { createNotificationService } from "./notification-services.js";
 
 export const getFormsByStudentService = async (studId, status) => {
   const query = { studId };
   if (status) query.status = status;
-  const forms = await Form.find(query).populate({path: 'applicationForm', select: 'pdfFile'}).populate({path: 'schoolId', select: 'name'});
+  const forms = await Form.find(query).populate({ path: 'applicationForm', select: 'pdfFile' }).populate({ path: 'schoolId', select: 'name' });
   return forms;
 };
 
 export const getFormsBySchoolService = async (schoolId, status) => {
   const query = { schoolId };
   if (status) query.status = status;
-  const forms = await Form.find(query).populate({path: 'applicationForm', select: 'pdfFile'}).populate({path: 'studId', select: 'name email'});
+  const forms = await Form.find(query).populate({ path: 'applicationForm', select: 'pdfFile' }).populate({ path: 'studId', select: 'name email' });
   return forms;
   return forms;
 };
 
 export const trackFormService = async (formId) => {
   const form = await Form.findById(formId).populate({
-      path: "schoolId",
-      select: "name"
-    }).populate({
-      path: "studId",
-      select: "pdfFile",
-    });
+    path: "schoolId",
+    select: "name"
+  }).populate({
+    path: "studId",
+    select: "pdfFile",
+  });
   if (!form) throw { status: 404, message: "Form not found" };
 
   return form;
 };
 
 export const getFormDetailsService = async (formId) => {
-  const form = await Form.findById(formId).populate({path: 'applicationForm', select: 'pdfFile'});
+  const form = await Form.findById(formId).populate({ path: 'applicationForm', select: 'pdfFile' });
   if (!form) throw { status: 404, message: "Form not found" };
   return form;
 };
 
 export const submitFormService = async (formId, schoolId, studId) => {
-  return await Form.create({ applicationForm: formId, schoolId, studId });
+  const student = await Student.findById(studId);
+  const school = await School.findById(schoolId);
+  const form = await Form.create({ applicationForm: formId, schoolId, studId });
+  await createNotificationService({ title: `Form Submitted`, body: `You have successfully submitted a form to ${school.name}`, authId: student.authId, notificationType: 'Submitted' });
+  return form;
 };
 
 export const submitBulkFormsService = async (studId, forms, formId) => {
@@ -59,6 +66,27 @@ export const updateFormStatusService = async (formId, status) => {
     { new: true }
   );
   if (!form) throw { status: 404, message: "Form not found" };
+
+  const student = await Student.findById(form.studId);
+  if (!student) throw { status: 404, message: "Student not found for this form" };
+
+  const school = await School.findById(form.schoolId);
+  if (!school) throw { status: 404, message: "School not found for this form" };
+
+  switch (status) {
+    case 'Accepted':
+      await createNotificationService({ title: 'Application Accepted', body: `Your application to ${school.name} has been accepted`, authId: student.authId, notificationType: 'Accepted' });
+      break;
+    case 'Rejected':
+      await createNotificationService({ title: 'Application Rejected', body: `Your application to ${school.name} has been rejected`, authId: student.authId, notificationType: 'Rejected' });
+      break;
+    case 'Reviewed':
+      await createNotificationService({ title: 'Application Under Review', body: `Your application to ${school.name} is under review`, authId: student.authId, notificationType: 'Reviewed' });
+      break;
+    default:
+      break;
+  }
+
   return form;
 };
 

@@ -59,7 +59,7 @@ export const loginUserService = async ({ email, password }) => {
   });
 
   ///TODO: Remove this from server once going to production
-  const notification = await createNotificationService({title: 'Logged In', body: 'You have successfully logged in', authId: auth._id});
+  const notification = await createNotificationService({title: 'Logged In', body: 'You have successfully logged in', authId: auth._id, notificationType: 'Others'});
   return { auth, token };
 };
 

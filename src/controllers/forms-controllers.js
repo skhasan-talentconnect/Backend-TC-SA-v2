@@ -89,6 +89,7 @@ export const updateFormStatus = async (req, res) => {
     const data = await updateFormStatusService(formId, status);
     res.status(200).json({ status: "success", message: "Form status updated", data });
   } catch (err) {
+    console.error("Error caught in controller:", err);
     res.status(err.status || 500).json({ status: "failed", message: err.message });
   }
 };
