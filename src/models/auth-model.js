@@ -27,6 +27,10 @@ const AuthSchema = new mongoose.Schema(
             required: true,
             enum: ['google', 'email']
         },
+        deviceToken:{
+            type: String,
+            required: false,
+        }
     },
     {
         timestamps: true,

@@ -15,7 +15,6 @@ export const getFormsBySchoolService = async (schoolId, status) => {
   if (status) query.status = status;
   const forms = await Form.find(query).populate({ path: 'applicationForm', select: 'pdfFile' }).populate({ path: 'studId', select: 'name email' });
   return forms;
-  return forms;
 };
 
 export const trackFormService = async (formId) => {
@@ -40,6 +39,12 @@ export const getFormDetailsService = async (formId) => {
 export const submitFormService = async (formId, schoolId, studId) => {
   const student = await Student.findById(studId);
   const school = await School.findById(schoolId);
+
+  const exisitingForm = await Form.findOne({ applicationForm: formId, schoolId, studId });
+  if (exisitingForm) throw { status: 409, message: "Form already submitted to this school" };
+  if (!student) throw { status: 404, message: "Student not found" };
+  if (!school) throw { status: 404, message: "School not found" };
+
   const form = await Form.create({ applicationForm: formId, schoolId, studId });
   await createNotificationService({ title: `Form Submitted`, body: `You have successfully submitted a form to ${school.name}`, authId: student.authId, notificationType: 'Submitted' });
   return form;

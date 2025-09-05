@@ -17,7 +17,10 @@ export const createNotification = async (req, res) => {
 // 2. Get notifications for a user
 export const getNotifications = async (req, res) => {
   try {
-    const notifications = await NotificationService.getNotificationsService(req.params);
+    const { authId } = req.params;
+    const { page = 1, limit = 10 } = req.query;
+
+    const notifications = await NotificationService.getNotificationsService({authId, page: parseInt(page, 10), limit: parseInt(limit, 10)});
     res.status(200).json({
       status: 'success',
       message: 'Notifications fetched successfully',

@@ -4,6 +4,7 @@ import OTP from '../models/otp-model.js';
 import { sendVerificationEmail, sendOtpToEmail } from '../utils/email.js';
 import mongoose from 'mongoose';
 import { createNotificationService } from './notification-services.js';
+import { pushNotification } from '../utils/send-notification.js';
 
 export const getAuth = async ({authId}) => {
   const auth = await Auth.findById(new mongoose.Types.ObjectId(authId));
@@ -17,7 +18,7 @@ export const getAuth = async ({authId}) => {
   return { auth };
 };
 
-export const registerUserService = async ({ email, password, userType, authProvider }) => {
+export const registerUserService = async ({ email, password, userType, authProvider, deviceToken }) => {
   const existingAuth = await Auth.findOne({ email });
 
   if (existingAuth) {
@@ -37,7 +38,7 @@ export const registerUserService = async ({ email, password, userType, authProvi
     }
   }
 
-  const newAuth = new Auth({ email, password, userType, authProvider, isEmailVerified: false });
+  const newAuth = new Auth({ email, password, userType, authProvider, isEmailVerified: false, deviceToken });
   await newAuth.save();
 
   const token = jwt.sign({ id: newAuth._id, email: newAuth.email }, process.env.SECRET, {
@@ -48,7 +49,7 @@ export const registerUserService = async ({ email, password, userType, authProvi
   return { email, token };
 };
 
-export const loginUserService = async ({ email, password }) => {
+export const loginUserService = async ({ email, password, deviceToken }) => {
   const auth = await Auth.findOne({ email });
   if (!auth) throw { status: 404, message: 'User not found' };
   if (auth.password !== password) throw { status: 401, message: 'Incorrect password' };
@@ -57,6 +58,9 @@ export const loginUserService = async ({ email, password }) => {
   const token = jwt.sign({ id: auth._id, email: auth.email }, process.env.SECRET, {
     expiresIn: '30d',
   });
+
+  auth.deviceToken = deviceToken;
+  await auth.save();
 
   ///TODO: Remove this from server once going to production
   const notification = await createNotificationService({title: 'Logged In', body: 'You have successfully logged in', authId: auth._id, notificationType: 'Others'});
