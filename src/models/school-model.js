@@ -49,6 +49,9 @@ const SchoolSchema = new mongoose.Schema({
       "More than 5 Lakh"
     ]
   },
+  rank:{type:String,required:false},
+  address:{type:String,required:false},
+  pinCode:{type:Number,required:false},
   upto: { type: String, required: true },
   email: { type: String, required: true },
   mobileNo: { type: String, required: true },
@@ -58,9 +61,17 @@ const SchoolSchema = new mongoose.Schema({
   status: { type: String, required: true, enum: ['pending', 'rejected', 'accepted'], default: "pending" },
   languageMedium: { type: [String], required: true },
   transportAvailable: { type: String, required: true, enum: ['yes', 'no'] },
-  //image: { type: String, required: true }, 
-  //logo: { type: String, required: true },
-  //banner: { type: String, required: true },
+  photos: [{
+    url: String,
+    publicId: String,
+    uploadedAt: { type: Date, default: Date.now }
+  }],
+  videos: {
+    url: String,
+    publicId: String,
+    uploadedAt: { type: Date, default: Date.now }
+  },
+
 }, { timestamps: true });
 
 const School = mongoose.model('schools', SchoolSchema);

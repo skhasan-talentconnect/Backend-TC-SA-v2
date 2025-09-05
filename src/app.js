@@ -10,6 +10,8 @@ import reviewRoutes from './routes/review-routes.js'
 import openAIRoutes from './routes/ai-routes.js';
 import formRoutes from './routes/form-routes.js'
 import notificationRoutes from './routes/notification-routes.js'
+import ChatbotRoutes from './routes/chatbot-routes.js';
+import { errorHandler } from './middlewares/cloudinary-error-handler.js';
 
 dotenv.config();
 connectDB();
@@ -30,7 +32,9 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/form', formRoutes);
 app.use('/api', openAIRoutes); 
+app.use('/api/chatbot',ChatbotRoutes) ;
 
+app.use(errorHandler);
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
