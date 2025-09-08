@@ -207,12 +207,12 @@ class ChatbotService {
     filter[question.field] = question.value;
 
     try {
-      const schools = await School.find(filter).select('name');
+      const schools = await School.find(filter).select('_id');
 
       // Simplified response with only count and school names
       return {
         count: schools.length,
-        schools: schools.map(school => school.name)
+        schools: schools.map(school => school._id)
       };
     } catch (error) {
       throw new Error(`Error filtering schools: ${error.message}`);
@@ -222,12 +222,12 @@ class ChatbotService {
   // Filter schools with multiple criteria - SIMPLIFIED RESPONSE
   async filterSchoolsWithMultipleCriteria(filters) {
     try {
-      const schools = await School.find(filters).select('name');
+      const schools = await School.find(filters).select('_id');
 
       // Simplified response with only count and school names
       return {
         count: schools.length,
-        schools: schools.map(school => school.name)
+        schools: schools.map(school => school._id)
       };
     } catch (error) {
       throw new Error(`Error filtering schools: ${error.message}`);
@@ -239,12 +239,12 @@ class ChatbotService {
     try {
       const schools = await School.find({
         name: { $regex: searchTerm, $options: 'i' }
-      }).select('name');
+      }).select('_id');
 
       // Simplified response with only count and school names
       return {
         count: schools.length,
-        schools: schools.map(school => school.name)
+        schools: schools.map(school => school._id)
       };
     } catch (error) {
       throw new Error(`Error searching schools: ${error.message}`);

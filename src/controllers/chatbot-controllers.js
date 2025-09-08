@@ -48,7 +48,7 @@ const filterByQuestion = async (req, res) => {
     res.status(200).json({
       success: true,
       count: result.count,
-      schools: result.schools
+      schoolIds: result.schools
     });
   } catch (error) {
     res.status(500).json({
@@ -67,7 +67,7 @@ const filterWithMultipleCriteria = async (req, res) => {
     res.status(200).json({
       success: true,
       count: result.count,
-      schools: result.schools
+      schoolIds: result.schools
     });
   } catch (error) {
     res.status(500).json({
@@ -93,7 +93,7 @@ const searchSchools = async (req, res) => {
     res.status(200).json({
       success: true,
       count: result.count,
-      schools: result.schools
+      schoolIds: result.schools
     });
   } catch (error) {
     res.status(500).json({
