@@ -31,7 +31,7 @@ export const updatePreferenceService = async (studId, updates) => {
 
 // Get preference
 export const getPreferenceService = async (studId) => {
-  const preference = await Preference.findOne({ studentId: studId }).populate("studentId");
+  const preference = await Preference.findOne({ studentId: studId });
 
   if (!preference) {
     throw {status:400, message:"Preference not found"};
