@@ -6,7 +6,7 @@ import { createNotificationService } from "./notification-services.js";
 export const getFormsByStudentService = async (studId, status) => {
   const query = { studId };
   if (status) query.status = status;
-  const forms = await Form.find(query).populate({ path: 'applicationForm', select: 'pdfFile' }).populate({ path: 'schoolId', select: 'name' });
+  const forms = await Form.find(query).populate({ path: 'applicationForm', select: 'pdfFile' }).populate({ path: 'schoolId', select: 'name' }).sort({createdAt: -1});
   return forms;
 };
 
@@ -31,7 +31,7 @@ export const trackFormService = async (formId) => {
 };
 
 export const getFormDetailsService = async (formId) => {
-  const form = await Form.findById(formId).populate({ path: 'applicationForm', select: 'pdfFile' });
+  const form = await Form.findById(formId).populate({ path: 'applicationForm', select: 'pdfFile' }).populate({ path: 'schoolId', select: 'name schoolMode genderType shifts state city' });
   if (!form) throw { status: 404, message: "Form not found" };
   return form;
 };
