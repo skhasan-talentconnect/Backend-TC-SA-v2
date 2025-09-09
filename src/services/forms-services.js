@@ -31,7 +31,7 @@ export const trackFormService = async (formId) => {
 };
 
 export const getFormDetailsService = async (formId) => {
-  const form = await Form.findById(formId).populate({ path: 'applicationForm', select: 'pdfFile' }).populate({ path: 'schoolId', select: 'name schoolMode genderType shifts state city' });
+  const form = await Form.findById(formId).populate({ path: 'applicationForm', select: 'pdfFile' }).populate({ path: 'schoolId', select: 'name schoolMode genderType shifts state city' }).populate({ path: 'studId', select: 'name email contactNo dateOfBirth gender' });
   if (!form) throw { status: 404, message: "Form not found" };
   return form;
 };
