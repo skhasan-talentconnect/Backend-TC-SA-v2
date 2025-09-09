@@ -6,7 +6,7 @@ import { createNotificationService } from "./notification-services.js";
 export const getFormsByStudentService = async (studId, status) => {
   const query = { studId };
   if (status) query.status = status;
-  const forms = await Form.find(query).populate({ path: 'applicationForm', select: 'pdfFile' }).populate({ path: 'schoolId', select: 'name' }).sort({createdAt: -1});
+  const forms = await Form.find(query).populate({ path: 'applicationForm', select: 'pdfFile' }).populate({ path: 'schoolId', select: 'name' }).populate({ path: 'schoolId', select: 'name schoolMode genderType shifts state city' }).populate({ path: 'studId', select: 'name' }).sort({createdAt: -1});
   return forms;
 };
 
