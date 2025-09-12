@@ -9,6 +9,7 @@ import applicationRoutes from './routes/application-routes.js';
 import reviewRoutes from './routes/review-routes.js'
 import openAIRoutes from './routes/ai-routes.js';
 import formRoutes from './routes/form-routes.js'
+import otpRoutes from "./routes/otp-routes.js";
 import notificationRoutes from './routes/notification-routes.js'
 import ChatbotRoutes from './routes/chatbot-routes.js';
 import { errorHandler } from './middlewares/cloudinary-error-handler.js';
@@ -31,8 +32,9 @@ app.use('/api/applications', applicationRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/form', formRoutes);
-app.use('/api', openAIRoutes); 
-app.use('/api/chatbot',ChatbotRoutes) ;
+app.use('/api', openAIRoutes);
+app.use('/api/chatbot',ChatbotRoutes);
+app.use("/api/otp", otpRoutes);
 
 app.use(errorHandler);
 const PORT = process.env.PORT || 8080;

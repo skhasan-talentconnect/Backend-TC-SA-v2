@@ -8,6 +8,10 @@ const AuthSchema = new mongoose.Schema(
             sparse : true,
             required : false
         },
+        phoneNumber: {
+            type :String,
+            required:false,
+        },
         password: {
             type: String,
             required : false
@@ -25,7 +29,7 @@ const AuthSchema = new mongoose.Schema(
         authProvider: {
             type: String,
             required: true,
-            enum: ['google', 'email']
+            enum: ['google', 'email', 'mobile']
         },
         deviceToken:{
             type: String,
