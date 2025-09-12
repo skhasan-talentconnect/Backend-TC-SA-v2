@@ -1,6 +1,6 @@
 import twilio from "twilio";
 import dotenv from "dotenv";
-import Otp from "../models/Phone-otp-model.js";
+import Otp from "../models/phone-otp-model.js";
 import Auth from "../models/auth-model.js";
 import jwt from 'jsonwebtoken';
 
