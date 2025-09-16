@@ -1,8 +1,10 @@
 import School from '../models/school-model.js';
+import AIService from './chatbot-ai-services.js';
 
 class ChatbotService {
   constructor() {
     this.questions = this.getPredefinedQuestions();
+    this.aiService = new AIService();
   }
 
   // Get all predefined questions with answers embedded
@@ -16,14 +18,14 @@ class ChatbotService {
       },
       {
         id: 2,
-        question: "Schools with annual fee range 10000 - 25000", 
+        question: "Schools with annual fee range 10000 - 25000",
         field: "feeRange",
         value: "10000 - 25000"
       },
       {
         id: 3,
         question: "Schools with annual fee range 25000 - 50000",
-        field: "feeRange", 
+        field: "feeRange",
         value: "25000 - 50000"
       },
       {
@@ -140,7 +142,7 @@ class ChatbotService {
         field: "transportAvailable",
         value: "no"
       },
-       {
+      {
         id: 23,
         question: "Schools with rank A+",
         field: "rank",
@@ -195,46 +197,7 @@ class ChatbotService {
     return this.questions.filter(q => q.field === category);
   }
 
-  // Filter schools based on a specific question - SIMPLIFIED RESPONSE
-  async filterSchoolsByQuestion(questionId) {
-    const question = this.questions.find(q => q.id === questionId);
 
-    if (!question) {
-      throw new Error('Question not found');
-    }
-
-    const filter = {};
-    filter[question.field] = question.value;
-
-    try {
-      const schools = await School.find(filter).select('_id');
-
-      // Simplified response with only count and school names
-      return {
-        count: schools.length,
-        schools: schools.map(school => school._id)
-      };
-    } catch (error) {
-      throw new Error(`Error filtering schools: ${error.message}`);
-    }
-  }
-
-  // Filter schools with multiple criteria - SIMPLIFIED RESPONSE
-  async filterSchoolsWithMultipleCriteria(filters) {
-    try {
-      const schools = await School.find(filters).select('_id');
-
-      // Simplified response with only count and school names
-      return {
-        count: schools.length,
-        schools: schools.map(school => school._id)
-      };
-    } catch (error) {
-      throw new Error(`Error filtering schools: ${error.message}`);
-    }
-  }
-
-  // Search schools by name - SIMPLIFIED RESPONSE
   async searchSchoolsByName(searchTerm) {
     try {
       const schools = await School.find({
@@ -248,6 +211,64 @@ class ChatbotService {
       };
     } catch (error) {
       throw new Error(`Error searching schools: ${error.message}`);
+    }
+  }
+
+  // Filter schools with multiple criteria - SIMPLIFIED RESPONSE
+  async getAIRecommendations(filters) {
+    try {
+      return await this.aiService.getSchoolRecommendations(filters);
+    } catch (error) {
+      console.error('AI Recommendation Error:', error);
+      // Fallback to regular filtering
+      const schools = await School.find(filters).select('_id');
+
+      // Simplified response with only count and school names
+      return {
+        aiResponse: "Here are schools matching your criteria:",
+        recommendedSchools: schools.map(school => school._id.toString())
+      };
+    }
+  }
+
+  // Update filter methods to optionally use AI
+  async filterSchoolsWithMultipleCriteria(filters, useAI = false) {
+    try {
+      if (useAI) {
+        return await this.getAIRecommendations(filters);
+      } else {
+        const schools = await School.find(filters).select('_id');
+        return {
+          count: schools.length,
+          schools: schools.map(school => school._id.toString()),
+          aiResponse: null
+        };
+      }
+    } catch (error) {
+      throw new Error(`Error filtering schools: ${error.message}`);
+    }
+  }
+
+  // Search schools by name - SIMPLIFIED RESPONSE
+  async filterSchoolsByQuestion(questionId, useAI = false) {
+    const question = this.questions.find(q => q.id === questionId);
+
+    if (!question) {
+      throw new Error('Question not found');
+    }
+
+    const filter = {};
+    filter[question.field] = question.value;
+
+    if (useAI) {
+      return await this.getAIRecommendations(filter);
+    } else {
+      const schools = await School.find(filter).select('_id');
+      return {
+        count: schools.length,
+        schools: schools.map(school => school._id.toString()),
+        aiResponse: null
+      };
     }
   }
 }

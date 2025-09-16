@@ -43,12 +43,18 @@ const getQuestionsByCategory = async (req, res) => {
 const filterByQuestion = async (req, res) => {
   try {
     const { questionId } = req.params;
-    const result = await chatbotService.filterSchoolsByQuestion(parseInt(questionId));
+        const { useAI } = req.query; // Get AI flag from query params
+
+    const result = await chatbotService.filterSchoolsByQuestion(
+      parseInt(questionId), 
+      useAI === 'true'
+    );
 
     res.status(200).json({
       success: true,
-      count: result.count,
-      schoolIds: result.schools
+      count: result.count || result.recommendedSchools?.length,
+      schoolIds: result.schools || result.recommendedSchools,
+      aiResponse: result.aiResponse || null
     });
   } catch (error) {
     res.status(500).json({
@@ -62,12 +68,18 @@ const filterByQuestion = async (req, res) => {
 const filterWithMultipleCriteria = async (req, res) => {
   try {
     const filters = req.body;
-    const result = await chatbotService.filterSchoolsWithMultipleCriteria(filters);
+        const { useAI } = req.query; // Get AI flag from query params
+
+    const result = await chatbotService.filterSchoolsWithMultipleCriteria(
+      filters, 
+      useAI === 'true'
+    );
 
     res.status(200).json({
       success: true,
-      count: result.count,
-      schoolIds: result.schools
+      count: result.count || result.recommendedSchools?.length,
+      schoolIds: result.schools || result.recommendedSchools,
+      aiResponse: result.aiResponse || null
     });
   } catch (error) {
     res.status(500).json({
