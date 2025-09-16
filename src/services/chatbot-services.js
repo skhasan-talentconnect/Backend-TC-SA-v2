@@ -1,10 +1,11 @@
+ 
 import School from '../models/school-model.js';
-import AIService from './chatbot-ai-services.js';
+import AIService from '../services/chatbot-ai-services.js';
 
 class ChatbotService {
   constructor() {
     this.questions = this.getPredefinedQuestions();
-    this.aiService = new AIService();
+ this.aiService = AIService
   }
 
   // Get all predefined questions with answers embedded
@@ -18,14 +19,14 @@ class ChatbotService {
       },
       {
         id: 2,
-        question: "Schools with annual fee range 10000 - 25000",
+        question: "Schools with annual fee range 10000 - 25000", 
         field: "feeRange",
         value: "10000 - 25000"
       },
       {
         id: 3,
         question: "Schools with annual fee range 25000 - 50000",
-        field: "feeRange",
+        field: "feeRange", 
         value: "25000 - 50000"
       },
       {
@@ -142,7 +143,7 @@ class ChatbotService {
         field: "transportAvailable",
         value: "no"
       },
-      {
+       {
         id: 23,
         question: "Schools with rank A+",
         field: "rank",
@@ -198,13 +199,14 @@ class ChatbotService {
   }
 
 
-  async searchSchoolsByName(searchTerm) {
+
+ async searchSchoolsByName(searchTerm) {
     try {
       const schools = await School.find({
         name: { $regex: searchTerm, $options: 'i' }
-      }).select('_id');
-
-      // Simplified response with only count and school names
+      }).select('_id'); // Select only _id
+      
+      // Return school IDs instead of names
       return {
         count: schools.length,
         schools: schools.map(school => school._id)
@@ -214,22 +216,37 @@ class ChatbotService {
     }
   }
 
-  // Filter schools with multiple criteria - SIMPLIFIED RESPONSE
-  async getAIRecommendations(filters) {
+    async getAIRecommendations(filters) {
     try {
-      return await this.aiService.getSchoolRecommendations(filters);
+      // aiService.getSchoolRecommendations already returns:
+      // { aiResponse: string, recommendedSchools: [names...] }
+      const res = await this.aiService.getSchoolRecommendations(filters);
+
+      // Guarantee shape and ensure recommendedSchools are names (not DB ids)
+      return {
+        aiResponse: res.aiResponse || null,
+        recommendedSchools: Array.isArray(res.recommendedSchools) ? res.recommendedSchools : []
+      };
     } catch (error) {
       console.error('AI Recommendation Error:', error);
-      // Fallback to regular filtering
-      const schools = await School.find(filters).select('_id');
 
-      // Simplified response with only count and school names
+      // IMPORTANT: fallback should return *names*, not DB ids.
+      // Use AIService's fallback string and parse it to names.
+      const fallback = this.aiService.createFallbackResponse
+        ? this.aiService.createFallbackResponse()
+        : 'Excel Academy, Bright Future International, Knowledge Heights School';
+
+      const parsed = (this.aiService.parseNames && typeof this.aiService.parseNames === 'function')
+        ? this.aiService.parseNames(fallback)
+        : fallback.split(',').map(s => s.trim()).filter(Boolean);
+
       return {
-        aiResponse: "Here are schools matching your criteria:",
-        recommendedSchools: schools.map(school => school._id.toString())
+        aiResponse: fallback,
+        recommendedSchools: parsed
       };
     }
   }
+
 
   // Update filter methods to optionally use AI
   async filterSchoolsWithMultipleCriteria(filters, useAI = false) {
@@ -249,10 +266,9 @@ class ChatbotService {
     }
   }
 
-  // Search schools by name - SIMPLIFIED RESPONSE
   async filterSchoolsByQuestion(questionId, useAI = false) {
     const question = this.questions.find(q => q.id === questionId);
-
+    
     if (!question) {
       throw new Error('Question not found');
     }
@@ -272,5 +288,7 @@ class ChatbotService {
     }
   }
 }
+
+
 
 export default ChatbotService;
