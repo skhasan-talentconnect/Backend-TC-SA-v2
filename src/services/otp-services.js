@@ -21,7 +21,7 @@ export const sendOtpService = async (phone) => {
   return otp;
 };
 
-export const verifyOtpService = async (phoneNumber, otp) => {
+export const verifyOtpService = async (phoneNumber, otp, deviceToken) => {
 
   const record = await Otp.findOne({ phone: phoneNumber, otp });
   if (!record)
@@ -35,6 +35,7 @@ export const verifyOtpService = async (phoneNumber, otp) => {
       authProvider: 'mobile',
       userType: 'student',
       isEmailVerified: true,
+      deviceToken: deviceToken || null
     });
     await existingAuth.save();
   }

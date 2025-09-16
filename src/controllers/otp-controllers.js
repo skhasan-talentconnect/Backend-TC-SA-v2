@@ -14,10 +14,10 @@ export const sendOtpController = async (req, res) => {
 
 export const verifyOtpController = async (req, res) => {
   try {
-    const { phone, otp } = req.body;
+    const { phone, otp, deviceToken } = req.body;
     if (!phone || !otp) return res.status(400).json({ message: "Phone & OTP required" });
 
-    const auth = await verifyOtpService(phone, otp);
+    const auth = await verifyOtpService(phone, otp, deviceToken);
     res.status(201).json({
       status: 'success',
       message: `Otp verified successfully`,
