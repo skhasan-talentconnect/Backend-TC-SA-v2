@@ -1,18 +1,18 @@
 import School from '../models/school-model.js';
+// From files in src/controllers/ or src/services/
 import cloudinary from '../../config/cloudinary.js';
 import streamifier from 'streamifier';
 
-//  Add school
+// Add school
 export const addSchoolService = async (data) => {
-
   const {
-    name, description, board, state, city, schoolMode, genderType, shifts, feeRange,
+    name, description, board, state, city,area, schoolMode, genderType, shifts, feeRange,
     address, pinCode, upto, email, mobileNo, specialist, tags, website, status,
     languageMedium, transportAvailable,rank
   } = data;
 
   const school = new School({
-    name, description, board, state, city, schoolMode, genderType, shifts, feeRange,
+    name, description, board, state, city,area, schoolMode, genderType, shifts, feeRange,
     address, pinCode, upto, email, mobileNo, specialist, tags, website, status,
     languageMedium, transportAvailable,rank
   });
@@ -59,11 +59,11 @@ export const uploadSchoolPhotosService = async (schoolId, files) => {
     });
 
     const uploadedPhotos = await Promise.all(uploadPromises);
-
+    
     // Add all new photos to the school
     school.photos.push(...uploadedPhotos);
     await school.save();
-
+    
     return school;
   } catch (error) {
     throw error;
@@ -113,10 +113,8 @@ export const uploadSchoolVideoService = async (schoolId, file) => {
     throw error;
   }
 };
-
 // Get school by ID
 export const getSchoolByIdService = async (schoolId) => {
-
   const school = await School.findById(schoolId);
 
   if (!school) {
@@ -129,26 +127,17 @@ export const getSchoolByIdService = async (schoolId) => {
 };
 
 // Get schools by status
-export const getSchoolsByStatusService = async (status, filter) => {
+export const getSchoolsByStatusService = async (status) => {
   const allowedStatus = ['pending', 'accepted', 'rejected'];
-     if (!allowedStatus.includes(status)) {
+  if (!allowedStatus.includes(status)) {
     const error = new Error('Invalid status. Must be pending, accepted, or rejected.');
     error.statusCode = 400;
     throw error;
   }
 
-    // Base query
-  const query = {};
-
-    if (filter && Object.keys(filter).length > 0) {
-    for (const [key, value] of Object.entries(filter)) {
-      query[key] = new RegExp(`^${value}$`, 'i'); // exact match, case-insensitive
-    }
-  }
-
-  const schools = await School.find({ status: status, ...query });
+  const schools = await School.find({ status });
   
- if (!schools || schools.length === 0) {
+  if (!schools || schools.length === 0) {
     const error = new Error(`No schools found with status: ${status}`);
     error.statusCode = 404;
     throw error;
@@ -165,10 +154,10 @@ export const updateSchoolInfoService = async (schoolId, data) => {
   });
 
   if (!updatedSchool) {
-  const error = new Error('School not found');
-  error.statusCode = 404;
-  throw error;
-}
+    const error = new Error('School not found');
+    error.statusCode = 404;
+    throw error;
+  }
 
   return updatedSchool;
 };
@@ -177,19 +166,22 @@ export const updateSchoolInfoService = async (schoolId, data) => {
 export const deleteSchoolService = async (schoolId) => {
   const deletedSchool = await School.findByIdAndDelete(schoolId);
   if (!deletedSchool) {
-  const error = new Error('School not found');
-  error.statusCode = 404;
-  throw error;
+    const error = new Error('School not found');
+    error.statusCode = 404;
+    throw error;
   }
 
   return deletedSchool;
 };
 
+// In school-services.js
+
+// Delete specific photo
 export const deleteSchoolPhotoService = async (schoolId, publicId) => {
   try {
     // Delete from Cloudinary
     await cloudinary.uploader.destroy(publicId);
-
+    
     // Remove from database
     const school = await School.findByIdAndUpdate(
       schoolId,
@@ -200,13 +192,13 @@ export const deleteSchoolPhotoService = async (schoolId, publicId) => {
       },
       { new: true }
     );
-
+    
     if (!school) {
       const error = new Error('School not found');
       error.statusCode = 404;
       throw error;
     }
-
+    
     return school;
   } catch (error) {
     throw error;
@@ -233,7 +225,7 @@ export const deleteSchoolVideoService = async (schoolId) => {
     // Remove from database
     school.video = undefined;
     await school.save();
-
+    
     return school;
   } catch (error) {
     throw error;
@@ -245,67 +237,67 @@ export const deleteSchoolVideoService = async (schoolId) => {
 // Get all photos for a school
 export const getSchoolPhotosService = async (schoolId) => {
   const school = await School.findById(schoolId).select('photos');
-
+  
   if (!school) {
     const error = new Error('School not found');
     error.statusCode = 404;
     throw error;
   }
-
+  
   return school.photos;
 };
 
 // Get all videos for a school  
 export const getSchoolVideosService = async (schoolId) => {
   const school = await School.findById(schoolId).select('videos');
-
+  
   if (!school) {
     const error = new Error('School not found');
     error.statusCode = 404;
     throw error;
   }
-
+  
   return school.videos;
 };
 
 // Get specific photo by publicId
 export const getSchoolPhotoService = async (schoolId, publicId) => {
   const school = await School.findById(schoolId);
-
+  
   if (!school) {
     const error = new Error('School not found');
     error.statusCode = 404;
     throw error;
   }
-
+  
   const photo = school.photos.find(photo => photo.publicId === publicId);
-
+  
   if (!photo) {
     const error = new Error('Photo not found');
     error.statusCode = 404;
     throw error;
   }
-
+  
   return photo;
 };
 
 // Get specific video by publicId
 export const getSchoolVideoService = async (schoolId, publicId) => {
   const school = await School.findById(schoolId);
-
+  
   if (!school) {
     const error = new Error('School not found');
     error.statusCode = 404;
     throw error;
   }
-
+  
   const video = school.videos.find(video => video.publicId === publicId);
-
+  
   if (!video) {
     const error = new Error('Video not found');
     error.statusCode = 404;
     throw error;
   }
-
+  
   return video;
 };

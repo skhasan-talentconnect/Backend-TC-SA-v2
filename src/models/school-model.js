@@ -32,6 +32,10 @@ const SchoolSchema = new mongoose.Schema({
   },
   state: { type: String, required: true },
   city: { type: String, required: true },
+  area: {
+    type: String,
+    required: false
+  },
   schoolMode: { type: String, required: true, enum: ['convent', 'private', 'government'] },
   genderType: { type: String, required: true, enum: ['boy', 'girl', 'co-ed'] },
   shifts: { type: [String], required: true, enum: ['morning', 'afternoon', 'night school'] },
@@ -49,9 +53,9 @@ const SchoolSchema = new mongoose.Schema({
       "More than 5 Lakh"
     ]
   },
-  rank:{type:String,required:false},
-  address:{type:String,required:false},
-  pinCode:{type:Number,required:false},
+  rank: { type: String, required: false },
+  address: { type: String, required: false },
+  pinCode: { type: Number, required: false },
   upto: { type: String, required: true },
   email: { type: String, required: true },
   mobileNo: { type: String, required: true },
@@ -60,7 +64,8 @@ const SchoolSchema = new mongoose.Schema({
   website: { type: String, required: false },
   status: { type: String, required: true, enum: ['pending', 'rejected', 'accepted'], default: "pending" },
   languageMedium: { type: [String], required: true },
-  transportAvailable: { type: String, required: true, enum: ['yes', 'no'] },
+  transportAvailable: { type: String, required: false, enum: ['yes', 'no'] },
+
   photos: [{
     url: String,
     publicId: String,

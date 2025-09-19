@@ -24,7 +24,7 @@ const getQuestionsByCategory = async (req, res) => {
   try {
     const { category } = req.params;
     const questions = chatbotService.getQuestionsByCategory(category);
-
+    
     res.status(200).json({
       success: true,
       category: category,
@@ -39,17 +39,20 @@ const getQuestionsByCategory = async (req, res) => {
   }
 };
 
-// Filter schools by question - SIMPLIFIED RESPONSE
+// Filter schools by question - RETURN schoolId
+// Filter schools by question - RETURN schoolId (or AI names if useAI)
 const filterByQuestion = async (req, res) => {
   try {
     const { questionId } = req.params;
-        const { useAI } = req.query; // Get AI flag from query params
+    const { useAI , area , city } = req.query; // Get AI flag from query params
 
-        const useAiFlag = useAI === 'true';
+    const useAiFlag = useAI === 'true';
 
     const result = await chatbotService.filterSchoolsByQuestion(
-      parseInt(questionId), 
+      parseInt(questionId),
       useAiFlag,
+      area,
+      city
     );
 
     if (useAiFlag) {
@@ -77,17 +80,16 @@ const filterByQuestion = async (req, res) => {
   }
 };
 
-// Filter schools with multiple criteria - SIMPLIFIED RESPONSE
 const filterWithMultipleCriteria = async (req, res) => {
   try {
     const filters = req.body;
-        const { useAI } = req.query; // Get AI flag from query params
+    const { useAI } = req.query; // Get AI flag from query params
 
-        const useAiFlag = useAI === 'true';
+    const useAiFlag = useAI === 'true';
 
     const result = await chatbotService.filterSchoolsWithMultipleCriteria(
-      filters, 
-      useAiFlag,
+      filters,
+      useAiFlag
     );
 
     if (useAiFlag) {
@@ -113,7 +115,7 @@ const filterWithMultipleCriteria = async (req, res) => {
   }
 };
 
-// Search schools by name - SIMPLIFIED RESPONSE
+// Search schools by name - RETURN schoolId
 const searchSchools = async (req, res) => {
   try {
     const { name } = req.query;
@@ -123,13 +125,13 @@ const searchSchools = async (req, res) => {
         message: 'Search term is required'
       });
     }
-
+    
     const result = await chatbotService.searchSchoolsByName(name);
-
+    
     res.status(200).json({
       success: true,
       count: result.count,
-      schoolIds: result.schools
+      schoolIds: result.schools // Changed from 'schools' to 'schoolIds'
     });
   } catch (error) {
     res.status(500).json({
