@@ -127,7 +127,7 @@ export const getSchoolByIdService = async (schoolId) => {
 };
 
 // Get schools by status
-export const getSchoolsByStatusService = async (status) => {
+export const getSchoolsByStatusService = async (status, filters) => {
   const allowedStatus = ['pending', 'accepted', 'rejected'];
   if (!allowedStatus.includes(status)) {
     const error = new Error('Invalid status. Must be pending, accepted, or rejected.');
@@ -135,7 +135,7 @@ export const getSchoolsByStatusService = async (status) => {
     throw error;
   }
 
-  const schools = await School.find({ status });
+  const schools = await School.find({ status, ...filters });
   
   if (!schools || schools.length === 0) {
     const error = new Error(`No schools found with status: ${status}`);
