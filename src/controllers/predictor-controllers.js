@@ -12,7 +12,7 @@ export const predictSchools = async (req, res) => {
       });
     }
     const matchedSchools = await predictSchoolsService(filters);
-    const mappedSchools = toSchoolCardModels(matchedSchools);
+    const mappedSchools = await toSchoolCardModels(matchedSchools);
 
  res.status(200).json({
       status: 'success',
