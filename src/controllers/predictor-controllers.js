@@ -1,4 +1,5 @@
 import { predictSchoolsService } from '../services/predictor-services.js';
+import { toSchoolCardModels } from '../utils/utils.js';
 
 export const predictSchools = async (req, res) => {
   try {
@@ -11,12 +12,13 @@ export const predictSchools = async (req, res) => {
       });
     }
     const matchedSchools = await predictSchoolsService(filters);
+    const mappedSchools = toSchoolCardModels(matchedSchools);
 
  res.status(200).json({
       status: 'success',
       message: 'Result of school predictor',
-      total: matchedSchools.length,
-      data: matchedSchools
+      total: mappedSchools.length,
+      data: mappedSchools,
     });
   }catch (error) {
     res.status(500).json({
