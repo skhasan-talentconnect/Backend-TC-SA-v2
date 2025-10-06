@@ -6,15 +6,15 @@ import streamifier from 'streamifier';
 // Add school
 export const addSchoolService = async (data) => {
   const {
-    name, description, board, state, city,area, schoolMode, genderType, shifts, feeRange,
+    name, description, board, state, city,area, latitude,longitude,schoolMode, genderType, shifts, feeRange,
     address, pinCode, upto, email, mobileNo, specialist, tags, website, status,
-    languageMedium, transportAvailable,rank
+    languageMedium, transportAvailable,rank, TeacherToStudentRatio
   } = data;
 
   const school = new School({
-    name, description, board, state, city,area, schoolMode, genderType, shifts, feeRange,
+    name, description, board, state, city,area,latitude,longitude, schoolMode, genderType, shifts, feeRange,
     address, pinCode, upto, email, mobileNo, specialist, tags, website, status,
-    languageMedium, transportAvailable,rank
+    languageMedium, transportAvailable,rank, TeacherToStudentRatio
   });
 
   return await school.save();
@@ -127,7 +127,7 @@ export const getSchoolByIdService = async (schoolId) => {
 };
 
 // Get schools by status
-export const getSchoolsByStatusService = async (status, filters) => {
+export const getSchoolsByStatusService = async (status) => {
   const allowedStatus = ['pending', 'accepted', 'rejected'];
   if (!allowedStatus.includes(status)) {
     const error = new Error('Invalid status. Must be pending, accepted, or rejected.');
@@ -135,7 +135,7 @@ export const getSchoolsByStatusService = async (status, filters) => {
     throw error;
   }
 
-  const schools = await School.find({ status, ...filters });
+  const schools = await School.find({ status });
   
   if (!schools || schools.length === 0) {
     const error = new Error(`No schools found with status: ${status}`);

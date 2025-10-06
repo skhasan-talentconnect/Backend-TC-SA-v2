@@ -36,6 +36,14 @@ const SchoolSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+   latitude: {
+    type: Number,
+  required : false
+  },
+  longitude: {
+    type: Number,
+    required : false
+  },
   schoolMode: { type: String, required: true, enum: ['convent', 'private', 'government'] },
   genderType: { type: String, required: true, enum: ['boy', 'girl', 'co-ed'] },
   shifts: { type: [String], required: true, enum: ['morning', 'afternoon', 'night school'] },
@@ -47,7 +55,7 @@ const SchoolSchema = new mongoose.Schema({
       "50000 - 75000",
       "75000 - 100000",
       "1 Lakh - 2 Lakh",
-      "2 Lakh - 3 Lakh",
+      "2 Lakh - 3 Lakh",     
       "3 Lakh - 4 Lakh",
       "4 Lakh - 5 Lakh",
       "More than 5 Lakh"
@@ -65,6 +73,7 @@ const SchoolSchema = new mongoose.Schema({
   status: { type: String, required: true, enum: ['pending', 'rejected', 'accepted'], default: "pending" },
   languageMedium: { type: [String], required: true },
   transportAvailable: { type: String, required: false, enum: ['yes', 'no'] },
+  TeacherToStudentRatio : {type : String ,required : false},
 
   photos: [{
     url: String,
