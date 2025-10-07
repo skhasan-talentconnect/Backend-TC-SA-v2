@@ -42,7 +42,7 @@ import {
   addAcademics, 
   getAcademicsById, 
   updateAcademics 
-} from '../controllers/academics-controllers.js';
+} from '../controllers/academic-controllers.js';
 import {addSupport, getSupportByStudId, getSupportBySupId ,deleteSupportBySupId} from '../controllers/support-controllers.js';
 import { predictSchools } from "../controllers/predictor-controllers.js";
 import {
