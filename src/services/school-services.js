@@ -1,8 +1,55 @@
 import School from '../models/school-model.js';
+import Alumni from '../models/alumni-model.js';
+import Academics from '../models/academics-model.js';
+import Infrastructure from '../models/infrastructure-model.js';
+import SafetyAndSecurity from '../models/safety-security-model.js';
+import FeesAndScholarships from '../models/fees-scholarship-model.js';
+import TechnologyAdoption from '../models/technology-adoption-model.js';
+import InternationalExposure from '../models/international-exposure-model.js';
+import OtherDetails from '../models/other-detail-model.js';
 // From files in src/controllers/ or src/services/
 import cloudinary from '../../config/cloudinary.js';
 import streamifier from 'streamifier';
 import { toSchoolCardModels } from '../utils/utils.js';
+import calculateScore from '../utils/school-score.js';
+
+export const getSchoolScoreByIdService = async (schoolId) => {
+  const school = await School.findById(schoolId);
+const academics = await Academics.findOne({ schoolId });
+const alumni = await Alumni.findOne({ schoolId });
+const infrastructure = await Infrastructure.findOne({ schoolId });
+const safetyAndSecurity = await SafetyAndSecurity.findOne({ schoolId });
+const feesAndScholarships = await FeesAndScholarships.findOne({ schoolId });
+const technologyAdoption = await TechnologyAdoption.findOne({ schoolId });
+const internationalExposure = await InternationalExposure.findOne({ schoolId });
+const otherDetails = await OtherDetails.findOne({ schoolId });
+
+  if (!school) {
+    const error = new Error('School not found');
+    error.statusCode = 404;
+    throw error;
+  }
+
+  if(!alumni || !academics || !infrastructure || !safetyAndSecurity || !feesAndScholarships || !technologyAdoption || !internationalExposure || !otherDetails) {
+    const error = new Error('Incomplete data to calculate score');
+    error.statusCode = 400;
+    throw error;
+  }
+
+  const score = calculateScore(
+    alumni || {}, 
+    academics || {}, 
+    infrastructure || {},
+    safetyAndSecurity || {},
+    feesAndScholarships || {},
+    technologyAdoption || {},
+    internationalExposure || {},
+    otherDetails || {}
+  );
+
+  return {name: school.name, score};
+};
+
 
 // Add school
 export const addSchoolService = async (data) => {

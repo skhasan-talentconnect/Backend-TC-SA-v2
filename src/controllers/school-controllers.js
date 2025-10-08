@@ -12,7 +12,8 @@ import {
   getSchoolPhotosService,
   getSchoolVideoService,
   getNearbySchoolsService,
-  getSchoolVideosService
+  getSchoolVideosService,
+  getSchoolScoreByIdService
 } from '../services/school-services.js';
 import { toSchoolCardModels } from '../utils/utils.js';
 
@@ -308,3 +309,22 @@ export const getNearbySchools = async (req, res) => {
     });
   }
 };
+
+export const getSchoolScoreById = async (req, res) => {
+  try{
+    const { id } = req.params;
+    const {name, score} = await getSchoolScoreByIdService(id);
+
+    res.status(200).json({
+      status: 'success',
+      message: `The score of ${name} is ${score}%`,
+    });
+
+  }catch(err){
+    console.log(err);
+        res.status(500).json({
+      status: 'Failed',
+      message: err.message
+    });
+  }
+}
