@@ -303,7 +303,7 @@ export const getNearbySchools = async (req, res) => {
     res.status(200).json({
       status: 'success',
       message: 'Fetched nearby schools successfully',
-      data: cardData
+      data: schools
     });
 
   } catch (error) {
