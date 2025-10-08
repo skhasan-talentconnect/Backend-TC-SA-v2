@@ -112,7 +112,9 @@ export const getSchoolById = async (req, res) => {
 export const getSchoolsByStatus = async (req, res) => {
   try {
     const { status } = req.params; 
-    const schools = await getSchoolsByStatusService(status);
+    const filters = req.query || {};
+    
+    const schools = await getSchoolsByStatusService(status, filters);
     
     res.status(200).json({
       status: 'success',

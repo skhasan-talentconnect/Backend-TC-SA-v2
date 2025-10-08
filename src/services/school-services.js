@@ -2,6 +2,7 @@ import School from '../models/school-model.js';
 // From files in src/controllers/ or src/services/
 import cloudinary from '../../config/cloudinary.js';
 import streamifier from 'streamifier';
+import { toSchoolCardModels } from '../utils/utils.js';
 
 // Add school
 export const addSchoolService = async (data) => {
@@ -127,7 +128,7 @@ export const getSchoolByIdService = async (schoolId) => {
 };
 
 // Get schools by status
-export const getSchoolsByStatusService = async (status) => {
+export const getSchoolsByStatusService = async (status, filters = {}) => {
   const allowedStatus = ['pending', 'accepted', 'rejected'];
   if (!allowedStatus.includes(status)) {
     const error = new Error('Invalid status. Must be pending, accepted, or rejected.');
@@ -135,7 +136,7 @@ export const getSchoolsByStatusService = async (status) => {
     throw error;
   }
 
-  const schools = await School.find({ status });
+  const schools = await School.find({ status, ...filters});
   
   if (!schools || schools.length === 0) {
     const error = new Error(`No schools found with status: ${status}`);
@@ -143,7 +144,9 @@ export const getSchoolsByStatusService = async (status) => {
     throw error;
   }
 
-  return schools;
+  const mappedSchools = await toSchoolCardModels(schools);
+  
+  return mappedSchools;
 };
 
 // Update school info
