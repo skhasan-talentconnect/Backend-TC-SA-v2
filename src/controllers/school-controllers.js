@@ -310,21 +310,13 @@ export const getNearbySchools = async (req, res) => {
   }
 };
 
-export const getSchoolScoreById = async (req, res) => {
+export const getSchoolScoreById = async (schoolId) => {
   try{
-    const { id } = req.params;
-    const {name, score} = await getSchoolScoreByIdService(id);
+    const {score} = await getSchoolScoreByIdService(schoolId);
 
-    res.status(200).json({
-      status: 'success',
-      message: `The score of ${name} is ${score}%`,
-    });
+    return score;
 
   }catch(err){
-    console.log(err);
-        res.status(500).json({
-      status: 'Failed',
-      message: err.message
-    });
+    return 0;
   }
 }

@@ -14,7 +14,6 @@ import { toSchoolCardModels } from '../utils/utils.js';
 import calculateScore from '../utils/school-score.js';
 
 export const getSchoolScoreByIdService = async (schoolId) => {
-  const school = await School.findById(schoolId);
 const academics = await Academics.findOne({ schoolId });
 const alumni = await Alumni.findOne({ schoolId });
 const infrastructure = await Infrastructure.findOne({ schoolId });
@@ -23,18 +22,6 @@ const feesAndScholarships = await FeesAndScholarships.findOne({ schoolId });
 const technologyAdoption = await TechnologyAdoption.findOne({ schoolId });
 const internationalExposure = await InternationalExposure.findOne({ schoolId });
 const otherDetails = await OtherDetails.findOne({ schoolId });
-
-  if (!school) {
-    const error = new Error('School not found');
-    error.statusCode = 404;
-    throw error;
-  }
-
-  if(!alumni || !academics || !infrastructure || !safetyAndSecurity || !feesAndScholarships || !technologyAdoption || !internationalExposure || !otherDetails) {
-    const error = new Error('Incomplete data to calculate score');
-    error.statusCode = 400;
-    throw error;
-  }
 
   const score = calculateScore(
     alumni || {}, 
@@ -47,7 +34,7 @@ const otherDetails = await OtherDetails.findOne({ schoolId });
     otherDetails || {}
   );
 
-  return {name: school.name, score};
+  return {score};
 };
 
 

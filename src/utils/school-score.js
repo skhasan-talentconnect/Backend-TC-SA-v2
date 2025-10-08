@@ -148,19 +148,19 @@ const calculateScore = (
         getNormalizedScore(academics?.extraCurricularActivities?.length || 0)
     );
 
-    console.log('Scores:', {
-        academicScore,
-        facultyQualityScore,
-        infrastructureScore,
-        safetyAndSecurityScore,
-        feesScore,
-        diversityScore,
-        reviewsScore,
-        techAdoptionScore,
-        exposureScore,
-        outcomesScore,
-        activitiesScore
-    });
+    // console.log('Scores:', {
+    //     academicScore,
+    //     facultyQualityScore,
+    //     infrastructureScore,
+    //     safetyAndSecurityScore,
+    //     feesScore,
+    //     diversityScore,
+    //     reviewsScore,
+    //     techAdoptionScore,
+    //     exposureScore,
+    //     outcomesScore,
+    //     activitiesScore
+    // });
 
     totalScore = academicScore + facultyQualityScore + infrastructureScore +
         safetyAndSecurityScore + feesScore + diversityScore + reviewsScore +

@@ -74,7 +74,7 @@ const SchoolSchema = new mongoose.Schema({
   languageMedium: { type: [String], required: true },
   transportAvailable: { type: String, required: false, enum: ['yes', 'no'] },
   TeacherToStudentRatio : {type : String ,required : false},
-
+  score: {type : Number, required : false, default : 0},
   photos: [{
     url: String,
     publicId: String,

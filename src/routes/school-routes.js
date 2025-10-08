@@ -8,7 +8,6 @@ getSchoolPhoto,
 getSchoolVideos,
 getSchoolPhotos,
 getSchoolVideo,
-getSchoolScoreById,
 } from '../controllers/school-controllers.js';
 import { 
   addTechnologyAdoption, 
@@ -59,7 +58,6 @@ const router = express.Router();
 router.post('/schools/', addSchool);
 router.get('/schools/status/:status', getSchoolsByStatus);
 router.get('/schools/nearby', getNearbySchools);
-router.get('/schools/score/:id', getSchoolScoreById);
 
 router.get('/schools/:id', getSchoolById);
 router.put('/schools/:id', updateSchoolInfo);
