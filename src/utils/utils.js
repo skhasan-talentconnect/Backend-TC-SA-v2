@@ -11,6 +11,8 @@ export const toSchoolCardModel = (school, ratings = 0, amenities = []) => {
         genderType: school.genderType,
         shifts: school.shifts,
         schoolMode: school.schoolMode,
+        latitude: school.latitude,
+        longitude: school.longitude,
         amenities,
         ratings,
     };
