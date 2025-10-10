@@ -50,6 +50,17 @@ import {
   getAllBlogs,
   getBlogById,
 } from "../controllers/blog-controllers.js";
+import { 
+  addAdmissionTimeline, 
+  getAdmissionTimelineById, 
+  updateAdmissionTimeline 
+} from '../controllers/admission-timeline-controllers.js';
+import {
+  addFaculty,
+  getFacultyById,
+  updateFaculty
+} from '../controllers/faculty-controllers.js';
+import { adminLogin } from '../controllers/admin-controllers.js';
 import { photoUpload, videoUpload } from '../../config/multer.js';
 
 const router = express.Router();
@@ -124,6 +135,19 @@ router.put('/schools/safety-security/:id', updateSafetyAndSecurity);
 router.post('/schools/international-exposure/', addInternationalExposure);
 router.get('/schools/international-exposure/:id', getInternationalExposureById);
 router.put('/schools/international-exposure/:id', updateInternationalExposure);
+
+//faculty
+router.post('/schools/faculty/', addFaculty);
+router.get('/schools/faculty/:id', getFacultyById);
+router.put('/schools/faculty/:id', updateFaculty);
+
+//admission-timeline
+router.post('/schools/admission-timeline/', addAdmissionTimeline);
+router.get('/schools/admission-timeline/:id', getAdmissionTimelineById);
+router.put('/schools/admission-timeline/:id', updateAdmissionTimeline);
+
+//admin
+router.post('/admin-login', adminLogin);
 
 //Searching Schools
 router.get("/search", searchSchool);
