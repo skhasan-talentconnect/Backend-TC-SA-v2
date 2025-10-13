@@ -54,7 +54,7 @@ async getSchoolRecommendations(filters = {}) {
     return `Based on these criteria: ${criteria}
 
 Generate a list of 3  school names that match the criteria.
-For each school, provide its name and a plausible, realistic website URL.
+For each school, provide its name and a plausible, and its official working website link.
 Return ONLY a valid JSON array of objects, where each object has a "name" and a "website" key.
 If you cannot find or create a realistic website for a school, use null for the website value.
 
