@@ -100,7 +100,7 @@ const calculateScore = (
         getNormalizedScore(academics?.specialExamsTraining?.length || 0)
     );
 
-    const facultyQualityScore = calculateFacultyQuality(); // static placeholder
+    const facultyQualityScore = calculateFacultyQuality(60,60,60); // static placeholder
 
     const infrastructureScore = calculateInfrastructure(
         getNormalizedScore(infrastructure?.labs?.length || 0),
@@ -128,7 +128,7 @@ const calculateScore = (
         otherDetails?.specialNeedsSupport != null ? 100 : 0
     );
 
-    const reviewsScore = calculateReviews(); // static placeholder
+    const reviewsScore = calculateReviews(60,60); // static placeholder
 
     const techAdoptionScore = calculateTechAdoption(
         technologyAdoption?.smartClassroomsPercentage || 0,
@@ -166,7 +166,7 @@ const calculateScore = (
         safetyAndSecurityScore + feesScore + diversityScore + reviewsScore +
         techAdoptionScore + exposureScore + outcomesScore + activitiesScore;
 
-    totalScore = Math.round(totalScore * 100) / 100;
+    totalScore = Math.round(totalScore);
 
     return totalScore;
 };
