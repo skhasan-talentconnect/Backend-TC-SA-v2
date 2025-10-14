@@ -6,7 +6,8 @@ import {
   submitFormService,
   submitBulkFormsService,
   updateFormStatusService,
-  deleteFormService
+  deleteFormService,
+  getIsFormApplied
 } from "../services/forms-services.js";
 
 export const getFormsByStudent = async (req, res) => {
@@ -104,3 +105,16 @@ export const deleteForm = async (req, res) => {
     res.status(err.status || 500).json({ status: "failed", message: err.message });
   }
 };
+
+export const isFormApplied = async (req, res) => {
+  try {
+    const { studId, schoolId } = req.params;
+
+    const data = await getIsFormApplied(studId, schoolId);
+
+    res.status(200).json({ status: "success", message: "Form application status fetched", data });
+
+  } catch (err) {
+    res.status(err.status || 500).json({ status: "failed", message: err.message });
+  }
+}

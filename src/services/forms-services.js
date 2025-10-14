@@ -100,3 +100,9 @@ export const deleteFormService = async (formId) => {
   if (!result) throw { status: 404, message: "Form not found" };
   return result;
 };
+
+export const getIsFormApplied = async (studId, schoolId) => {
+  const form = await Form.findOne({ studId, schoolId });
+  if(!form) throw { status: 404, message: "No form application found for this student and school" };
+  return { isApplied: true, formId: form._id, status: form.status };
+}
