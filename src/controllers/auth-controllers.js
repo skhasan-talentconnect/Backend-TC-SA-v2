@@ -23,6 +23,7 @@ export const registerUser = async (req, res) => {
       data: `This is just for testing purpose: ${result.token}`,
     });
   } catch (error) {
+    console.log(error);
     res.status(error.status || 500).json({ status: 'failed', message: error.message });
   }
 };
