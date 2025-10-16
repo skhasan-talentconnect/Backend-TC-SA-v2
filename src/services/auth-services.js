@@ -38,7 +38,7 @@ export const registerUserService = async ({ email, password, userType, authProvi
     }
   }
 
-  const newAuth = new Auth({ email, password, userType, authProvider, isEmailVerified: false, deviceToken });
+  const newAuth = new Auth({ email, password, userType, authProvider, isEmailVerified: true, deviceToken });
   await newAuth.save();
 
   const token = jwt.sign({ id: newAuth._id, email: newAuth.email }, process.env.SECRET, {
