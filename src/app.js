@@ -24,6 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
+
 //Routes for the API calls
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);

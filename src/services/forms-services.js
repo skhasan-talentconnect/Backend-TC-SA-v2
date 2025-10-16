@@ -64,10 +64,18 @@ export const submitBulkFormsService = async (studId, forms, formId) => {
   return submittedForms;
 };
 
-export const updateFormStatusService = async (formId, status) => {
+export const updateFormStatusService = async (formId, status, note) => {
+  
+  // 2. CREATE A DYNAMIC UPDATE OBJECT
+  const updateData = { status };
+  // Only add the note if the status is 'Call for Interview'
+  if (status === 'Call for Interview' && note) {
+    updateData.interviewNote = note;
+  }
+
   const form = await Form.findByIdAndUpdate(
     formId,
-    { status },
+    updateData, // Use the dynamic update object
     { new: true }
   );
   if (!form) throw { status: 404, message: "Form not found" };
@@ -77,16 +85,26 @@ export const updateFormStatusService = async (formId, status) => {
 
   const school = await School.findById(form.schoolId);
   if (!school) throw { status: 404, message: "School not found for this form" };
-
+  
+  // 3. ADD A NEW CASE for the interview notification
   switch (status) {
     case 'Accepted':
       await createNotificationService({ title: 'Application Accepted', body: `Your application to ${school.name} has been accepted`, authId: student.authId, notificationType: 'Accepted' });
       break;
     case 'Rejected':
-      await createNotificationService({ title: 'Application Rejected', body: `Your application to ${school.name} has been rejected`, authId: student.authId, notificationType: 'Rejected' });
+      await createNotification-service({ title: 'Application Rejected', body: `Your application to ${school.name} has been rejected`, authId: student.authId, notificationType: 'Rejected' });
       break;
     case 'Reviewed':
       await createNotificationService({ title: 'Application Under Review', body: `Your application to ${school.name} is under review`, authId: student.authId, notificationType: 'Reviewed' });
+      break;
+    // ADD THIS NEW CASE
+    case 'Call for Interview':
+      await createNotificationService({ 
+          title: 'Interview Invitation', 
+          body: `You've been invited for an interview at ${school.name}. Note: "${note}"`, 
+          authId: student.authId, 
+          notificationType: 'Interview' 
+      });
       break;
     default:
       break;
@@ -94,7 +112,6 @@ export const updateFormStatusService = async (formId, status) => {
 
   return form;
 };
-
 export const deleteFormService = async (formId) => {
   const result = await Form.findByIdAndDelete(formId);
   if (!result) throw { status: 404, message: "Form not found" };
