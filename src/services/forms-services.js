@@ -92,7 +92,7 @@ export const updateFormStatusService = async (formId, status, note) => {
       await createNotificationService({ title: 'Application Accepted', body: `Your application to ${school.name} has been accepted`, authId: student.authId, notificationType: 'Accepted' });
       break;
     case 'Rejected':
-      await createNotification-service({ title: 'Application Rejected', body: `Your application to ${school.name} has been rejected`, authId: student.authId, notificationType: 'Rejected' });
+      await createNotificationService({ title: 'Application Rejected', body: `Your application to ${school.name} has been rejected`, authId: student.authId, notificationType: 'Rejected' });
       break;
     case 'Reviewed':
       await createNotificationService({ title: 'Application Under Review', body: `Your application to ${school.name} is under review`, authId: student.authId, notificationType: 'Reviewed' });
