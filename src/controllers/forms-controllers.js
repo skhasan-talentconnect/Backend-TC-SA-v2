@@ -92,7 +92,7 @@ export const updateFormStatus = async (req, res) => {
     
 
     // 2. ADD VALIDATION: Ensure note exists for interview status
-    if (status === 'Call for Interview' && (!note || note.trim() === '')) {
+    if (status === 'Interview' && (!note || note.trim() === '')) {
         return res.status(400).json({ 
             status: "failed", 
             message: "An interview note is required when the status is 'Call for Interview'." 

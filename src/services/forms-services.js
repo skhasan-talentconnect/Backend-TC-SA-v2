@@ -69,7 +69,7 @@ export const updateFormStatusService = async (formId, status, note) => {
   // 2. CREATE A DYNAMIC UPDATE OBJECT
   const updateData = { status };
   // Only add the note if the status is 'Call for Interview'
-  if (status === 'Call for Interview' && note) {
+  if (status === 'Interview' && note) {
     updateData.interviewNote = note;
   }
 
@@ -98,7 +98,7 @@ export const updateFormStatusService = async (formId, status, note) => {
       await createNotificationService({ title: 'Application Under Review', body: `Your application to ${school.name} is under review`, authId: student.authId, notificationType: 'Reviewed' });
       break;
     // ADD THIS NEW CASE
-    case 'Call for Interview':
+    case 'Interview':
       await createNotificationService({ 
           title: 'Interview Invitation', 
           body: `You've been invited for an interview at ${school.name}. Note: "${note}"`, 

@@ -19,7 +19,7 @@ const FormSchema = new mongoose.Schema({
   status: {
         type: String,
         // 1. ADD THE NEW STATUS to the enum list
-        enum: ['Pending', 'Reviewed', 'Accepted', 'Rejected', 'Call for Interview'],
+        enum: ['Pending', 'Reviewed', 'Accepted', 'Rejected', 'Interview'],
         default: 'Pending',
     },
     // 2. ADD THE NEW FIELD for the interview note
