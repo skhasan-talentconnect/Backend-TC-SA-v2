@@ -10,196 +10,254 @@ class ChatbotService {
 
   // Get all predefined questions with answers embedded
   getPredefinedQuestions() {
-    return [
-      {
-        id: 1,
-        question: "Schools with annual fee range 1000 - 10000",
-        field: "feeRange",
-        value: "1000 - 10000"
-      },
-      {
-        id: 2,
-        question: "Schools with annual fee range 10000 - 25000", 
-        field: "feeRange",
-        value: "10000 - 25000"
-      },
-      {
-        id: 3,
-        question: "Schools with annual fee range 25000 - 50000",
-        field: "feeRange", 
-        value: "25000 - 50000"
-      },
-      {
-        id: 4,
-        question: "Schools with annual fee range 50000 - 75000",
-        field: "feeRange",
-        value: "50000 - 75000"
-      },
-      {
-        id: 5,
-        question: "Schools with annual fee range 75000 - 100000",
-        field: "feeRange",
-        value: "75000 - 100000"
-      },
-      {
-        id: 6,
-        question: "Schools with annual fee range 1 Lakh - 2 Lakh",
-        field: "feeRange",
-        value: "1 Lakh - 2 Lakh"
-      },
-      {
-        id: 7,
-        question: "Schools with annual fee range 2 Lakh - 3 Lakh",
-        field: "feeRange",
-        value: "2 Lakh - 3 Lakh"
-      },
-      {
-        id: 8,
-        question: "Schools with annual fee range 3 Lakh - 4 Lakh",
-        field: "feeRange",
-        value: "3 Lakh - 4 Lakh"
-      },
-      {
-        id: 9,
-        question: "Schools with annual fee range 4 Lakh - 5 Lakh",
-        field: "feeRange",
-        value: "4 Lakh - 5 Lakh"
-      },
-      {
-        id: 10,
-        question: "Schools with annual fee range More than 5 Lakh",
-        field: "feeRange",
-        value: "More than 5 Lakh"
-      },
-      {
-        id: 11,
-        question: "Schools with board CBSE",
-        field: "board",
-        value: "CBSE"
-      },
-      {
-        id: 12,
-        question: "Schools with board ICSE",
-        field: "board",
-        value: "ICSE"
-      },
-      {
-        id: 13,
-        question: "Schools with board STATE",
-        field: "board",
-        value: "STATE"
-      },
-      {
-        id: 14,
-        question: "Schools with board OTHER",
-        field: "board",
-        value: "OTHER"
-      },
-      {
-        id: 15,
-        question: "Schools with school mode convent",
-        field: "schoolMode",
-        value: "convent"
-      },
-      {
-        id: 16,
-        question: "Schools with school mode private",
-        field: "schoolMode",
-        value: "private"
-      },
-      {
-        id: 17,
-        question: "Schools with school mode government",
-        field: "schoolMode",
-        value: "government"
-      },
-      {
-        id: 18,
-        question: "Schools with gender type boy",
-        field: "genderType",
-        value: "boy"
-      },
-      {
-        id: 19,
-        question: "Schools with gender type girl",
-        field: "genderType",
-        value: "girl"
-      },
-      {
-        id: 20,
-        question: "Schools with gender type co-ed",
-        field: "genderType",
-        value: "co-ed"
-      },
-      {
-        id: 21,
-        question: "Schools with transport available yes",
-        field: "transportAvailable",
-        value: "yes"
-      },
-      {
-        id: 22,
-        question: "Schools with transport available no",
-        field: "transportAvailable",
-        value: "no"
-      },
-       {
-        id: 23,
-        question: "Schools with rank A+",
-        field: "rank",
-        value: "A+"
-      },
-      {
-        id: 24,
-        question: "Schools with rank A",
-        field: "rank",
-        value: "A"
-      },
-      {
-        id: 25,
-        question: "Schools with rank B+",
-        field: "rank",
-        value: "B+"
-      },
-      {
-        id: 26,
-        question: "Schools with rank B",
-        field: "rank",
-        value: "B"
-      },
-      {
-        id: 27,
-        question: "Schools with rank C+",
-        field: "rank",
-        value: "C+"
-      },
-      {
-        id: 28,
-        question: "Schools with rank C",
-        field: "rank",
-        value: "C"
-      },
-      {
-        id: 29,
-        question: "Schools with rank D",
-        field: "rank",
-        value: "D"
-      },
-      {
-        id:30,
-        question : "In my Area",
-        field : "area",
-        value : "Yes"
-      },
-    
-      {
-        id:31,
-        question : "In my City",
-        field : "city",
-        value : "yes"
-      },
-  
-    ];
+    return[
+  {
+    "id": 1,
+    "question": "Schools with annual fee range 1000 - 10000",
+    "field": "feeRange",
+    "value": "1000 - 10000"
+  },
+  {
+    "id": 2,
+    "question": "Schools with annual fee range 10000 - 25000",
+    "field": "feeRange",
+    "value": "10000 - 25000"
+  },
+  {
+    "id": 3,
+    "question": "Schools with annual fee range 25000 - 50000",
+    "field": "feeRange",
+    "value": "25000 - 50000"
+  },
+  {
+    "id": 4,
+    "question": "Schools with annual fee range 50000 - 75000",
+    "field": "feeRange",
+    "value": "50000 - 75000"
+  },
+  {
+    "id": 5,
+    "question": "Schools with annual fee range 75000 - 100000",
+    "field": "feeRange",
+    "value": "75000 - 100000"
+  },
+  {
+    "id": 6,
+    "question": "Schools with annual fee range 1 Lakh - 2 Lakh",
+    "field": "feeRange",
+    "value": "1 Lakh - 2 Lakh"
+  },
+  {
+    "id": 7,
+    "question": "Schools with annual fee range 2 Lakh - 3 Lakh",
+    "field": "feeRange",
+    "value": "2 Lakh - 3 Lakh"
+  },
+  {
+    "id": 8,
+    "question": "Schools with annual fee range 3 Lakh - 4 Lakh",
+    "field": "feeRange",
+    "value": "3 Lakh - 4 Lakh"
+  },
+  {
+    "id": 9,
+    "question": "Schools with annual fee range 4 Lakh - 5 Lakh",
+    "field": "feeRange",
+    "value": "4 Lakh - 5 Lakh"
+  },
+  {
+    "id": 10,
+    "question": "Schools with annual fee range More than 5 Lakh",
+    "field": "feeRange",
+    "value": "More than 5 Lakh"
+  },
+  {
+    "id": 11,
+    "question": "Schools with board CBSE",
+    "field": "board",
+    "value": "CBSE"
+  },
+  {
+    "id": 12,
+    "question": "Schools with board ICSE",
+    "field": "board",
+    "value": "ICSE"
+  },
+  {
+    "id": 13,
+    "question": "Schools with board CISCE",
+    "field": "board",
+    "value": "CISCE"
+  },
+  {
+    "id": 14,
+    "question": "Schools with board IB",
+    "field": "board",
+    "value": "IB"
+  },
+  {
+    "id": 15,
+    "question": "Schools with board NIOS",
+    "field": "board",
+    "value": "NIOS"
+  },
+  {
+    "id": 16,
+    "question": "Schools with board SSC",
+    "field": "board",
+    "value": "SSC"
+  },
+  {
+    "id": 17,
+    "question": "Schools with board KVS",
+    "field": "board",
+    "value": "KVS"
+  },
+  {
+    "id": 18,
+    "question": "Schools with board JNV",
+    "field": "board",
+    "value": "JNV"
+  },
+  {
+    "id": 19,
+    "question": "Schools with board MSBSHSE",
+    "field": "board",
+    "value": "MSBSHSE"
+  },
+  {
+    "id": 20,
+    "question": "Schools with board KSEEB",
+    "field": "board",
+    "value": "KSEEB"
+  },
+  {
+    "id": 21,
+    "question": "Schools with board SEBA",
+    "field": "board",
+    "value": "SEBA"
+  },
+  {
+    "id": 22,
+    "question": "Schools with board BSE",
+    "field": "board",
+    "value": "BSE"
+  },
+  {
+    "id": 23,
+    "question": "Schools with board STATE",
+    "field": "board",
+    "value": "STATE"
+  },
+  {
+    "id": 24,
+    "question": "Schools with board OTHER",
+    "field": "board",
+    "value": "OTHER"
+  },
+  {
+    "id": 25,
+    "question": "Schools with school mode convent",
+    "field": "schoolMode",
+    "value": "convent"
+  },
+  {
+    "id": 26,
+    "question": "Schools with school mode private",
+    "field": "schoolMode",
+    "value": "private"
+  },
+  {
+    "id": 27,
+    "question": "Schools with school mode government",
+    "field": "schoolMode",
+    "value": "government"
+  },
+  {
+    "id": 28,
+    "question": "Schools with gender type boy",
+    "field": "genderType",
+    "value": "boy"
+  },
+  {
+    "id": 29,
+    "question": "Schools with gender type girl",
+    "field": "genderType",
+    "value": "girl"
+  },
+  {
+    "id": 30,
+    "question": "Schools with gender type co-ed",
+    "field": "genderType",
+    "value": "co-ed"
+  },
+  {
+    "id": 31,
+    "question": "Schools with transport available yes",
+    "field": "transportAvailable",
+    "value": "yes"
+  },
+  {
+    "id": 32,
+    "question": "Schools with transport available no",
+    "field": "transportAvailable",
+    "value": "no"
+  },
+  {
+    "id": 33,
+    "question": "Schools with rank A+",
+    "field": "rank",
+    "value": "A+"
+  },
+  {
+    "id": 34,
+    "question": "Schools with rank A",
+    "field": "rank",
+    "value": "A"
+  },
+  {
+    "id": 35,
+    "question": "Schools with rank B+",
+    "field": "rank",
+    "value": "B+"
+  },
+  {
+    "id": 36,
+    "question": "Schools with rank B",
+    "field": "rank",
+    "value": "B"
+  },
+  {
+    "id": 37,
+    "question": "Schools with rank C+",
+    "field": "rank",
+    "value": "C+"
+  },
+  {
+    "id": 38,
+    "question": "Schools with rank C",
+    "field": "rank",
+    "value": "C"
+  },
+  {
+    "id": 39,
+    "question": "Schools with rank D",
+    "field": "rank",
+    "value": "D"
+  },
+  {
+    "id": 40,
+    "question": "In my Area",
+    "field": "area",
+    "value": "Yes"
+  },
+  {
+    "id": 41,
+    "question": "In my City",
+    "field": "city",
+    "value": "yes"
+  }
+]
   }
 
   // Get all predefined questions
