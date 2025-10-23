@@ -12,6 +12,7 @@ import cloudinary from '../../config/cloudinary.js';
 import streamifier from 'streamifier';
 import { toSchoolCardModels } from '../utils/utils.js';
 import calculateScore from '../utils/school-score.js';
+import mongoose from 'mongoose';
 
 export const getSchoolScoreByIdService = async (schoolId) => {
 const academics = await Academics.findOne({ schoolId });
@@ -41,13 +42,13 @@ const otherDetails = await OtherDetails.findOne({ schoolId });
 // Add school
 export const addSchoolService = async (data) => {
   const {
-    name, description, board, state, city,area, latitude,longitude,schoolMode, genderType, shifts, feeRange,
+    authId,name, description, board, state, city,area, latitude,longitude,schoolMode, genderType, shifts, feeRange,
     address, pinCode, upto, email, mobileNo, specialist, tags, website, status,
     languageMedium, transportAvailable,rank, TeacherToStudentRatio
   } = data;
 
   const school = new School({
-    name, description, board, state, city,area,latitude,longitude, schoolMode, genderType, shifts, feeRange,
+    _id: new mongoose.Types.ObjectId(authId), name, description, board, state, city,area,latitude,longitude, schoolMode, genderType, shifts, feeRange,
     address, pinCode, upto, email, mobileNo, specialist, tags, website, status,
     languageMedium, transportAvailable,rank, TeacherToStudentRatio
   });
