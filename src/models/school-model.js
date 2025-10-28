@@ -75,6 +75,9 @@ const SchoolSchema = new mongoose.Schema({
   transportAvailable: { type: String, required: false, enum: ['yes', 'no'] },
   TeacherToStudentRatio : {type : String ,required : false},
   score: {type : Number, required : false, default : 0},
+  instagramHandle: { type: String, required: false },
+  twitterHandle: { type: String, required: false },
+  linkedinHandle: { type: String, required: false },
   photos: [{
     url: String,
     publicId: String,

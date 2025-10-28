@@ -44,13 +44,13 @@ export const addSchoolService = async (data) => {
   const {
     authId,name, description, board, state, city,area, latitude,longitude,schoolMode, genderType, shifts, feeRange,
     address, pinCode, upto, email, mobileNo, specialist, tags, website, status,
-    languageMedium, transportAvailable,rank, TeacherToStudentRatio
+    languageMedium, transportAvailable,rank, TeacherToStudentRatio, instagramHandle, twitterHandle, linkedinHandle,
   } = data;
 
   const school = new School({
     _id: new mongoose.Types.ObjectId(authId), name, description, board, state, city,area,latitude,longitude, schoolMode, genderType, shifts, feeRange,
     address, pinCode, upto, email, mobileNo, specialist, tags, website, status,
-    languageMedium, transportAvailable,rank, TeacherToStudentRatio
+    languageMedium, transportAvailable,rank, TeacherToStudentRatio, instagramHandle, twitterHandle, linkedinHandle,
   });
 
   return await school.save();
