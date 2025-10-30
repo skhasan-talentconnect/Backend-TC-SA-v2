@@ -12,6 +12,8 @@ export const addStudentService = async (data) => {
   const newStudent = new Student(data);
   return await newStudent.save();
 };
+// Count total students
+
 
 // Update student
 export const updateStudentService = async (authId, updates) => {

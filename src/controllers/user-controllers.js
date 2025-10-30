@@ -19,6 +19,8 @@ export const addStudent = async (req, res) => {
   }
 };
 
+
+
 // PUT /update/:authId
 export const updateStudent = async (req, res) => {
   try {

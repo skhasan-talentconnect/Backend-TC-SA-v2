@@ -7,7 +7,10 @@ import {addSchool, getSchoolById, getSchoolsByStatus, getNearbySchools, updateSc
 getSchoolPhoto,
 getSchoolVideos,
 getSchoolPhotos,
+getTotalSchoolsCount,
 getSchoolVideo,
+    getStudentsCount,
+
 } from '../controllers/school-controllers.js';
 import { 
   addTechnologyAdoption, 
@@ -69,7 +72,7 @@ const router = express.Router();
 router.post('/schools/', addSchool);
 router.get('/schools/status/:status', getSchoolsByStatus);
 router.get('/schools/nearby', getNearbySchools);
-
+router.get("/count", getStudentsCount);
 router.get('/schools/:id', getSchoolById);
 router.put('/schools/:id', updateSchoolInfo);
 router.delete('/schools/:id', deleteSchool);
@@ -161,6 +164,9 @@ router.post('/support', ensureAuthenticated, addSupport);
 router.get('/support/:studId', getSupportByStudId);
 router.get('/support-id/:supportId', getSupportBySupId);  
 router.delete('/support/:supportId',ensureAuthenticated, deleteSupportBySupId);
+
+
+router.get('/count/all', getTotalSchoolsCount);
 
 router.post('/predict-schools', predictSchools);
 

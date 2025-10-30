@@ -10,6 +10,8 @@ import OtherDetails from '../models/other-detail-model.js';
 // From files in src/controllers/ or src/services/
 import cloudinary from '../../config/cloudinary.js';
 import streamifier from 'streamifier';
+import Student from "../models/user-model.js";
+
 import { toSchoolCardModels } from '../utils/utils.js';
 import calculateScore from '../utils/school-score.js';
 import mongoose from 'mongoose';
@@ -105,6 +107,16 @@ export const uploadSchoolPhotosService = async (schoolId, files) => {
     throw error;
   }
 };
+
+export const getTotalSchoolsCountService = async () => {
+  const count = await School.countDocuments({});
+  return count;
+};
+export const getStudentsCountService = async () => {
+  const totalStudents = await Student.countDocuments();
+  return totalStudents;
+};
+
 
 // Upload single video (replace existing)
 export const uploadSchoolVideoService = async (schoolId, file) => {

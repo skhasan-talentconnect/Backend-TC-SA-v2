@@ -12,6 +12,9 @@ import {
   getSchoolPhotosService,
   getSchoolVideoService,
   getNearbySchoolsService,
+  getTotalSchoolsCountService,
+    getStudentsCountService,
+  
   getSchoolVideosService,
   getSchoolScoreByIdService
 } from '../services/school-services.js';
@@ -35,6 +38,22 @@ export const addSchool = async (req, res) => {
   }
 };
 
+// GET /count
+export const getStudentsCount = async (req, res) => {
+  try {
+    const totalStudents = await getStudentsCountService();
+
+    res.status(200).json({
+      status: "success",
+      totalStudents
+    });
+  } catch (err) {
+    res.status(err.status||500).json({ 
+      status: "failed", 
+      message: err.message 
+    });
+  }
+};
 
 export const uploadSchoolPhotos = async (req, res) => {
   try {
@@ -62,6 +81,22 @@ export const uploadSchoolPhotos = async (req, res) => {
     });
   } catch (error) {
     res.status(error.statusCode || 500).json({
+      status: 'Failed',
+      message: error.message
+    });
+  }
+};
+export const getTotalSchoolsCount = async (req, res) => {
+  try {
+    const count = await getTotalSchoolsCountService();
+    
+    res.status(200).json({
+      status: 'success',
+      message: 'Total schools count fetched successfully',
+      totalSchools: count
+    });
+  } catch (error) {
+    res.status(500).json({
       status: 'Failed',
       message: error.message
     });

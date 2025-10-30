@@ -18,7 +18,8 @@ import {
 import {
   addPreference,
   updatePreference,
-  getPreference
+  getPreference,
+    
 } from "../controllers/pref-controllers.js";
 
 import {
@@ -26,6 +27,7 @@ import {
   getShortlistedSchools,
   removeShortlist,
   getShortlistCount,
+
 } from "../controllers/shortlist-controllers.js";
 
 const router = express.Router();
@@ -35,6 +37,7 @@ router.post('/', ensureAuthenticated, addStudent);
 router.get('/:authId', ensureAuthenticated, getStudent);
 router.put('/:authId', ensureAuthenticated, updateStudent);
 router.delete('/:authId', ensureAuthenticated, deleteStudent);
+
 
 //Preferences
 router.post("/preferences/",  addPreference);
