@@ -14,7 +14,6 @@ import Student from "../models/user-model.js";
 
 import { toSchoolCardModels } from '../utils/utils.js';
 import calculateScore from '../utils/school-score.js';
-import mongoose from 'mongoose';
 
 export const getSchoolScoreByIdService = async (schoolId) => {
 const academics = await Academics.findOne({ schoolId });
@@ -44,15 +43,15 @@ const otherDetails = await OtherDetails.findOne({ schoolId });
 // Add school
 export const addSchoolService = async (data) => {
   const {
-    authId,name, description, board, state, city,area, latitude,longitude,schoolMode, genderType, shifts, feeRange,
+    name, description, board, state, city,area, latitude,longitude,schoolMode, genderType, shifts, feeRange,
     address, pinCode, upto, email, mobileNo, specialist, tags, website, status,
-    languageMedium, transportAvailable,rank, TeacherToStudentRatio, instagramHandle, twitterHandle, linkedinHandle,
+    languageMedium, transportAvailable,rank, TeacherToStudentRatio
   } = data;
 
   const school = new School({
-    _id: new mongoose.Types.ObjectId(authId), name, description, board, state, city,area,latitude,longitude, schoolMode, genderType, shifts, feeRange,
+    name, description, board, state, city,area,latitude,longitude, schoolMode, genderType, shifts, feeRange,
     address, pinCode, upto, email, mobileNo, specialist, tags, website, status,
-    languageMedium, transportAvailable,rank, TeacherToStudentRatio, instagramHandle, twitterHandle, linkedinHandle,
+    languageMedium, transportAvailable,rank, TeacherToStudentRatio
   });
 
   return await school.save();

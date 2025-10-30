@@ -83,6 +83,7 @@ export const generateStudentPDFBuffer = (student) => {
         ["Specially Abled", student.speciallyAbled ? "Yes" : "No"],
         ["Specially Abled Type", student.speciallyAbledType],
         ["Nationality", student.nationality],
+        ["standard", student.standard],
         ["Religion", student.religion],
         ["Caste", student.caste],
         ["Subcaste", student.subcaste],

@@ -38,11 +38,11 @@ const SchoolSchema = new mongoose.Schema({
   },
    latitude: {
     type: Number,
-  required : false
+  required : true
   },
   longitude: {
     type: Number,
-    required : false
+    required : true
   },
   schoolMode: { type: String, required: true, enum: ['convent', 'private', 'government'] },
   genderType: { type: String, required: true, enum: ['boy', 'girl', 'co-ed'] },
