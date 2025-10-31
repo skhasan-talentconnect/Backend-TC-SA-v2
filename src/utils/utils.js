@@ -15,6 +15,7 @@ export const toSchoolCardModel = (school, ratings = 0, amenities = [], schoolSco
         latitude: school.latitude,
         longitude: school.longitude,
         score: schoolScore || 0,
+        coverImage: school.photos?.length > 0 ? school.photos[0] : null,
         amenities,
         ratings,
     };
