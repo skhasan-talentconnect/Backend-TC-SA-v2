@@ -13,6 +13,7 @@ import otpRoutes from "./routes/otp-routes.js";
 import notificationRoutes from './routes/notification-routes.js'
 import ChatbotRoutes from './routes/chatbot-routes.js';
 import { errorHandler } from './middlewares/cloudinary-error-handler.js';
+import { getEntryPage } from './utils/entry-point.js';
 
 dotenv.config();
 connectDB();
@@ -26,6 +27,9 @@ app.use(cors());
 
 
 //Routes for the API calls
+app.get('/', (req, res) => {
+    res.send(getEntryPage());
+});
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin', schoolRoutes);
