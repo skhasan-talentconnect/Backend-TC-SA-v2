@@ -14,12 +14,29 @@ import {
   getNearbySchoolsService,
   getTotalSchoolsCountService,
     getStudentsCountService,
-  
+   uploadSchoolLogoService ,
+     getSchoolLogoService,
   getSchoolVideosService,
   getSchoolScoreByIdService
 } from '../services/school-services.js';
 import { toSchoolCardModels } from '../utils/utils.js';
 
+
+export const getSchoolLogo = async (req, res) => {
+  try {
+    const logo = await getSchoolLogoService(req.params.id);
+    res.status(200).json({
+      status: 'success',
+      message: 'Logo retrieved successfully',
+      data: logo
+    });
+  } catch (error) {
+    res.status(error.statusCode || 500).json({
+      status: 'Failed',
+      message: error.message
+    });
+  }
+};
 // Add school
 export const addSchool = async (req, res) => {
   try {
@@ -97,6 +114,29 @@ export const getTotalSchoolsCount = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
+      status: 'Failed',
+      message: error.message
+    });
+  }
+};
+export const uploadSchoolLogo = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        status: 'Failed',
+        message: 'No file uploaded'
+      });
+    }
+
+    const school = await uploadSchoolLogoService(req.params.id, req.file);
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Logo uploaded successfully',
+      data: school
+    });
+  } catch (error) {
+    res.status(error.statusCode || 500).json({
       status: 'Failed',
       message: error.message
     });

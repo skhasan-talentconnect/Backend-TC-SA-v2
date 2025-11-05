@@ -8,6 +8,8 @@ getSchoolPhoto,
 getSchoolVideos,
 getSchoolPhotos,
 getTotalSchoolsCount,
+uploadSchoolLogo,
+getSchoolLogo ,
 getSchoolVideo,
     getStudentsCount,
 
@@ -64,7 +66,7 @@ import {
   updateFaculty
 } from '../controllers/faculty-controllers.js';
 import { adminLogin } from '../controllers/admin-controllers.js';
-import { photoUpload, videoUpload } from '../../config/multer.js';
+import { photoUpload, videoUpload,logoUpload } from '../../config/multer.js';
 
 const router = express.Router();
 
@@ -80,6 +82,8 @@ router.delete('/schools/:id', deleteSchool);
 router.post('/:id/upload/photos', photoUpload.array('files', 4), uploadSchoolPhotos); // 5MB limit
 router.post('/:id/upload/video', videoUpload.single('file'), uploadSchoolVideo); // 20MB limit
 router.delete('/:id/photo/:publicId', deleteSchoolPhoto);
+router.post('/:id/upload/logo', logoUpload.single('logo'), uploadSchoolLogo);
+router.get('/:id/logo', getSchoolLogo);
 router.delete('/:id/video/:publicId', deleteSchoolVideo);
 
 router.get('/:id/photos', getSchoolPhotos); // Get all photos

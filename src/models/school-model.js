@@ -88,6 +88,12 @@ const SchoolSchema = new mongoose.Schema({
     publicId: String,
     uploadedAt: { type: Date, default: Date.now }
   },
+  
+  logo: {
+    url: String,
+    publicId: String,
+    uploadedAt: { type: Date, default: Date.now }
+  },
 
 }, { timestamps: true });
 

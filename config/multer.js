@@ -28,5 +28,17 @@ export const videoUpload = multer({
     }
   }
 });
+export const logoUpload = multer({
+  limits: {
+    fileSize: 2 * 1024 * 1024, // 2MB
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed for logo!'), false);
+    }
+  }
+});
 
-export default { photoUpload, videoUpload };
+export default { photoUpload, videoUpload, logoUpload };

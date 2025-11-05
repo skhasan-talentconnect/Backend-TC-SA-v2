@@ -115,6 +115,44 @@ export const getStudentsCountService = async () => {
   const totalStudents = await Student.countDocuments();
   return totalStudents;
 };
+export const uploadSchoolLogoService = async (schoolId, file) => {
+  try {
+    const school = await School.findById(schoolId);
+    if (!school) {
+      const error = new Error('School not found');
+      error.statusCode = 404;
+      throw error;
+    }
+
+    // If school already has a logo, remove the old one from Cloudinary
+    if (school.logo && school.logo.publicId) {
+      await cloudinary.uploader.destroy(school.logo.publicId, { resource_type: 'image' });
+    }
+
+    return new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        {
+          folder: 'schools/logos',
+          resource_type: 'image'
+        },
+        async (error, result) => {
+          if (error) return reject(error);
+
+          // Save new logo
+          school.logo = {
+            url: result.secure_url,
+            publicId: result.public_id
+          };
+          await school.save();
+          resolve(school);
+        }
+      );
+      streamifier.createReadStream(file.buffer).pipe(stream);
+    });
+  } catch (error) {
+    throw error;
+  }
+};
 
 
 // Upload single video (replace existing)
@@ -389,4 +427,23 @@ export const getNearbySchoolsService = async (longitude, latitude, state) => {
   
   console.log(`--- DEBUG: After filtering, found ${nearbySchools.length} schools within 4km.`);
   return nearbySchools;
+};
+
+// Get school logo
+export const getSchoolLogoService = async (schoolId) => {
+  const school = await School.findById(schoolId).select('logo');
+
+  if (!school) {
+    const error = new Error('School not found');
+    error.statusCode = 404;
+    throw error;
+  }
+
+  if (!school.logo || !school.logo.url) {
+    const error = new Error('Logo not found');
+    error.statusCode = 404;
+    throw error;
+  }
+
+  return school.logo;
 };
