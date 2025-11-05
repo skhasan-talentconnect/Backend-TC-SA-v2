@@ -201,6 +201,7 @@ export const uploadSchoolVideoService = async (schoolId, file) => {
 // Get school by ID
 export const getSchoolByIdService = async (schoolId) => {
   const school = await School.findById(schoolId);
+  school.photos = [school.logo, ...school.photos];
 
   if (!school) {
     const error = new Error('School not found');
