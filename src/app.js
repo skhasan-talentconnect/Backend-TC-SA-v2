@@ -14,6 +14,7 @@ import notificationRoutes from './routes/notification-routes.js'
 import ChatbotRoutes from './routes/chatbot-routes.js';
 import { errorHandler } from './middlewares/cloudinary-error-handler.js';
 import { getEntryPage } from './utils/entry-point.js';
+import { getPrivacyPage } from './utils/privacy.js';
 
 dotenv.config();
 connectDB();
@@ -29,6 +30,9 @@ app.use(cors());
 //Routes for the API calls
 app.get('/', (req, res) => {
     res.send(getEntryPage());
+});
+app.get('/privacy', (req, res) => {
+    res.send(getPrivacyPage());
 });
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
