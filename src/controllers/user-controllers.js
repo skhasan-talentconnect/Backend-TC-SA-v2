@@ -42,9 +42,9 @@ export const updateStudent = async (req, res) => {
 // DELETE /delete/:authId
 export const deleteStudent = async (req, res) => {
   try {
-    const { authId } = req.params;
+    const { email, password } = req.body;
 
-    await deleteStudentService(authId);
+    await deleteStudentService(email, password);
 
     res.status(200).json({
       status: "success",

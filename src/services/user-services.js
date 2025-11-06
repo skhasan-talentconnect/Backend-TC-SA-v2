@@ -1,4 +1,5 @@
 import Student from "../models/user-model.js";
+import Auth from "../models/auth-model.js";
 
 // Add a new student
 export const addStudentService = async (data) => {
@@ -30,12 +31,30 @@ export const updateStudentService = async (authId, updates) => {
   return updatedStudent;
 };
 
-// Delete student
-export const deleteStudentService = async (authId) => {
-  const deletedStudent = await Student.findOneAndDelete({ authId });
+export const deleteStudentService = async (email, password) => {
+  // Find student by email
+  const auth = await Auth.findOne({ email });
+  if (!auth) {
+    throw { status: 404, message: "Student not found" };
+  }
 
+  // Verify password
+  const isPasswordMatch = password === auth.password; 
+  if (!isPasswordMatch) {
+    throw { status: 401, message: "Incorrect password" };
+  }
+
+  console.log(auth); 
+  
+  const student = await Student.findOne({ email });
+  if (!student) {
+    throw { status: 404, message: "Student not found" };
+  }
+
+  // Delete student
+  const deletedStudent = await Student.deleteOne({ authId: student.authId });
   if (!deletedStudent) {
-     throw {status:400, message:"Student Not Found"};
+    throw { status: 400, message: "Failed to delete student" };
   }
 
   return deletedStudent;

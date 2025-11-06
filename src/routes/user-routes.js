@@ -36,7 +36,7 @@ const router = express.Router();
 router.post('/', ensureAuthenticated, addStudent);
 router.get('/:authId', ensureAuthenticated, getStudent);
 router.put('/:authId', ensureAuthenticated, updateStudent);
-router.delete('/:authId', ensureAuthenticated, deleteStudent);
+router.delete('/', deleteStudent);
 
 
 //Preferences
