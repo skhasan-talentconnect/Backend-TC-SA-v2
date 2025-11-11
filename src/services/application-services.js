@@ -1,3 +1,4 @@
+// services/application-services.js
 import StudentApplication from '../models/application-model.js';
 
 export const addStudApplications = async (data) => {
@@ -9,19 +10,22 @@ export const getAllStudApplications = async () => {
   return await StudentApplication.find();
 };
 
-export const getStudApplicationsById = async (studId) => {
-  return await StudentApplication.findOne({ studId });
+// Return ALL applications for a studId (previously returned a single application)
+export const getStudApplicationsByStudId = async (studId) => {
+  return await StudentApplication.find({ studId }).sort({ createdAt: -1 });
 };
 
-
-export const updateStudApplications = async (studId, data) => {
-  return await StudentApplication.findOneAndUpdate(
-    { studId },  data,
-    { new: true }
-  );
+// Get a single application by applicationId (the _id of StudentApplication)
+export const getStudApplicationById = async (applicationId) => {
+  return await StudentApplication.findById(applicationId);
 };
 
+// Update a specific application by its applicationId
+export const updateStudApplicationById = async (applicationId, data) => {
+  return await StudentApplication.findByIdAndUpdate(applicationId, data, { new: true });
+};
 
-export const deleteStudApplications = async (studId) => {
-  return await StudentApplication.findOneAndDelete({ studId });
+// Delete a specific application by applicationId
+export const deleteStudApplicationById = async (applicationId) => {
+  return await StudentApplication.findByIdAndDelete(applicationId);
 };

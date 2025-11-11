@@ -1,105 +1,107 @@
+// src/controllers/application-controllers.js
 import {
-  addStudApplications,
-  updateStudApplications,
-  deleteStudApplications,
-  getAllStudApplications,
-  getStudApplicationsById
+  addStudApplications as addStudApplicationsService,
+  getAllStudApplications as getAllStudApplicationsService,
+  getStudApplicationsByStudId as getStudApplicationsByStudIdService,
+  getStudApplicationById as getStudApplicationByIdService,
+  updateStudApplicationById as updateStudApplicationByIdService,
+  deleteStudApplicationById as deleteStudApplicationByIdService,
 } from '../services/application-services.js';
 
 export const addStudApplication = async (req, res) => {
   try {
-    const applicationData = await addStudApplications(req.body);
+    const applicationData = await addStudApplicationsService(req.body);
     res.status(201).json({
       status: "success",
       message: "Application added successfully",
       data: applicationData
     });
   } catch (error) {
-    res.status(500).json({
+    console.error("addStudApplication error:", error);
+    res.status(error.status || 500).json({
       status: 'Failed',
-      message: error.message
+      message: error.message || 'Internal server error'
     });
   }
 };
 
 export const getAllStudApplication = async (req, res) => {
   try {
-    const applications = await getAllStudApplications();
+    const applications = await getAllStudApplicationsService();
     res.status(200).json({
       status: "success",
-       message: "Fetch All the Applications successfully",
+      message: "Fetched all applications successfully",
       data: applications
     });
   } catch (error) {
-    res.status(500).json({
+    console.error("getAllStudApplication error:", error);
+    res.status(error.status || 500).json({
       status: 'Failed',
-      message: error.message
+      message: error.message || 'Internal server error'
     });
   }
 };
 
+// GET /applications/stud/:studId  -> returns all applications for that studId
+export const getStudApplicationsByStudId = async (req, res) => {
+  try {
+    const { studId } = req.params;
+    const applications = await getStudApplicationsByStudIdService(studId);
+    res.status(200).json({
+      status: "success",
+      message: "Fetched applications for student successfully",
+      data: applications
+    });
+  } catch (error) {
+    console.error("getStudApplicationsByStudId error:", error);
+    res.status(error.status || 500).json({
+      status: 'Failed',
+      message: error.message || 'Internal server error'
+    });
+  }
+};
+
+// GET /applications/:applicationId  -> single application detail
 export const getStudApplicationById = async (req, res) => {
   try {
-    const application = await getStudApplicationsById(req.params.studId );
+    const { applicationId } = req.params;
+    const application = await getStudApplicationByIdService(applicationId);
     if (!application) {
-      return res.status(404).json({
-        status: 'Failed',
-        message: 'Application not found'
-      });
+      return res.status(404).json({ status: 'Failed', message: 'Application not found' });
     }
-    res.status(200).json({
-      status: "success",
-       message: "Get an Application successfully",
-      data: application
-    });
+    res.status(200).json({ status: "success", message: "Fetched application", data: application });
   } catch (error) {
-    res.status(500).json({
-      status: 'Failed',
-      message: error.message
-    });
+    console.error("getStudApplicationById error:", error);
+    res.status(error.status || 500).json({ status: 'Failed', message: error.message || 'Internal server error' });
   }
 };
 
+// PUT /applications/:applicationId
 export const updateStudApplication = async (req, res) => {
   try {
-    const updatedApplication = await updateStudApplications(req.params.studId , req.body);
+    const { applicationId } = req.params;
+    const updatedApplication = await updateStudApplicationByIdService(applicationId, req.body);
     if (!updatedApplication) {
-      return res.status(404).json({
-        status: 'Failed',
-        message: 'Application not found'
-      });
+      return res.status(404).json({ status: 'Failed', message: 'Application not found' });
     }
-    res.status(200).json({
-      status: "success",
-      message: "Application updated successfully",
-      data: updatedApplication
-    });
+    res.status(200).json({ status: "success", message: "Application updated successfully", data: updatedApplication });
   } catch (error) {
-    res.status(500).json({
-      status: 'Failed',
-      message: error.message
-    });
+    console.error("updateStudApplication error:", error);
+    res.status(error.status || 500).json({ status: 'Failed', message: error.message || 'Internal server error' });
   }
 };
 
+// DELETE /applications/:applicationId
 export const deleteStudApplication = async (req, res) => {
   try {
-    const deletedApplication = await deleteStudApplications(req.params.studId );
+    const { applicationId } = req.params;
+    const deletedApplication = await deleteStudApplicationByIdService(applicationId);
     if (!deletedApplication) {
-      return res.status(404).json({
-        status: 'Failed',
-        message: 'Application not found'
-      });
+      return res.status(404).json({ status: 'Failed', message: 'Application not found' });
     }
-    res.status(200).json({
-      status: "success",
-      message: "Application deleted successfully",
-      data: deletedApplication
-    });
+    res.status(200).json({ status: "success", message: "Application deleted successfully", data: deletedApplication });
   } catch (error) {
-    res.status(500).json({
-      status: 'Failed',
-      message: error.message
-    });
+    console.error("deleteStudApplication error:", error);
+    res.status(error.status || 500).json({ status: 'Failed', message: error.message || 'Internal server error' });
   }
 };

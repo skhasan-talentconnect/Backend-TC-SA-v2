@@ -1,3 +1,4 @@
+// controllers/forms-controllers.js
 import {
   getFormsByStudentService,
   getFormsBySchoolService,
@@ -56,26 +57,34 @@ export const getFormDetails = async (req, res) => {
   }
 };
 
+/**
+ * Submit single form.
+ * Accepts optional applicationId in body or query to link form to a StudentApplication.
+ * POST /:schoolId/:studId/:formId
+ */
 export const submitForm = async (req, res) => {
   try {
     const { formId, schoolId, studId } = req.params;
+    const applicationId = req.body.applicationId || req.query.applicationId || null;
 
-    const data = await submitFormService(formId, schoolId, studId);
+    const data = await submitFormService(formId, schoolId, studId, applicationId);
     res.status(201).json({ status: "success", message: "Form submitted successfully", data });
   } catch (err) {
     res.status(err.status || 500).json({ status: "failed", message: err.message });
   }
 };
 
+/**
+ * Bulk submit:
+ * POST /bulk-forms/:studId/:formId
+ * body: { forms: [schoolId1, schoolId2], applicationId?: "<applicationId>" }
+ */
 export const submitBulkForms = async (req, res) => {
-
-  console.log(req.body)
-
   try {
     const { studId, formId } = req.params;
-    const { forms } = req.body;
+    const { forms, applicationId } = req.body;
 
-    const data = await submitBulkFormsService(studId, forms, formId);
+    const data = await submitBulkFormsService(studId, forms, formId, applicationId || null);
     res.status(201).json({ status: "success", message: "Bulk forms submitted", data });
   } catch (err) {
     res.status(err.status || 500).json({ status: "failed", message: err.message });
@@ -83,23 +92,18 @@ export const submitBulkForms = async (req, res) => {
 };
 
 export const updateFormStatus = async (req, res) => {
-
   try {
     const { formId } = req.params;
     const { status } = req.query;
-    // 1. GET THE NOTE FROM THE REQUEST BODY
     const { note } = req.body;
-    
 
-    // 2. ADD VALIDATION: Ensure note exists for interview status
     if (status === 'Interview' && (!note || note.trim() === '')) {
-        return res.status(400).json({ 
-            status: "failed", 
-            message: "An interview note is required when the status is 'Call for Interview'." 
-        });
+      return res.status(400).json({
+        status: "failed",
+        message: "An interview note is required when the status is 'Call for Interview'."
+      });
     }
 
-    // 3. PASS THE NOTE to the service function
     const data = await updateFormStatusService(formId, status, note);
     res.status(200).json({ status: "success", message: "Form status updated", data });
   } catch (err) {
@@ -107,6 +111,7 @@ export const updateFormStatus = async (req, res) => {
     res.status(err.status || 500).json({ status: "failed", message: err.message });
   }
 };
+
 export const deleteForm = async (req, res) => {
   try {
     const { formId } = req.params;
@@ -118,15 +123,20 @@ export const deleteForm = async (req, res) => {
   }
 };
 
+/**
+ * Check if a form is applied.
+ * Endpoint: GET /is-applied/:studId/:schoolId
+ * Optional applicationId can be passed as query param to check for a specific StudentApplication:
+ * GET /is-applied/:studId/:schoolId?applicationId=<id>
+ */
 export const isFormApplied = async (req, res) => {
   try {
     const { studId, schoolId } = req.params;
+    const applicationId = req.query.applicationId || null;
 
-    const data = await getIsFormApplied(studId, schoolId);
-
+    const data = await getIsFormApplied(studId, schoolId, applicationId);
     res.status(200).json({ status: "success", message: "Form application status fetched", data });
-
   } catch (err) {
     res.status(err.status || 500).json({ status: "failed", message: err.message });
   }
-}
+};

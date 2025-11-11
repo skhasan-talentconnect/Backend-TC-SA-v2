@@ -49,8 +49,9 @@ router.get("/shortlist/:authId",  getShortlistedSchools);
 router.get("/shortlist/count/:authId", getShortlistCount);
 router.post("/shortlist/remove", removeShortlist);
 
-router.get("/pdf/view/:studId", viewStudentPDF);
-router.get("/pdf/download/:studId", downloadStudentPdf);
-router.post("/pdf/generate/:studId", generateAndSaveStudentPdf);
+router.post("/pdf/generate/:studId/:applicationId", generateAndSaveStudentPdf);
+router.get("/pdf/download/:studId/:applicationId", downloadStudentPdf);
+router.get("/pdf/view/:studId/:applicationId", viewStudentPDF);
+
 
 export default router;
