@@ -5,6 +5,7 @@ import ensureAuthenticated from "../middlewares/validate-token-middleware.js";
 import {
   generateAndSaveStudentPdf,
    viewStudentPDF,
+   listStudentPdfs,
   downloadStudentPdf,
 } from "../controllers/student-pdf-controllers.js";
 
@@ -52,6 +53,8 @@ router.post("/shortlist/remove", removeShortlist);
 router.post("/pdf/generate/:studId/:applicationId", generateAndSaveStudentPdf);
 router.get("/pdf/download/:studId/:applicationId", downloadStudentPdf);
 router.get("/pdf/view/:studId/:applicationId", viewStudentPDF);
+
+router.get("/list/:studId", listStudentPdfs);
 
 
 export default router;

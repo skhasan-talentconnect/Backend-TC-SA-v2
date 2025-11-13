@@ -1,6 +1,25 @@
 import { generateStudentPDFBuffer } from "../utils/pdf-generator.js";
-import { saveStudentPdf, getStudentPdf, getStudentPDFBuffer } from "../services/student-pdf-services.js";
+import { saveStudentPdf, getStudentPdf, getStudentPDFBuffer, listStudentPdfsByStudId, } from "../services/student-pdf-services.js";
 import { getStudApplicationById } from "../services/application-services.js";
+
+
+export const listStudentPdfs = async (req, res) => {
+  try {
+    const { studId } = req.params;
+    if (!studId) return res.status(400).json({ status: "failed", message: "Missing studId" });
+
+    const list = await listStudentPdfsByStudId(studId);
+
+    return res.status(200).json({
+      status: "success",
+      message: "PDF list fetched",
+      data: list,
+    });
+  } catch (err) {
+    console.error("listStudentPdfs error:", err);
+    return res.status(500).json({ status: "failed", message: err.message || "Internal server error" });
+  }
+};
 
 export const generateAndSaveStudentPdf = async (req, res) => {
   try {
