@@ -18,14 +18,16 @@ export const saveStudentPdf = async (studId, pdfBuffer, applicationId) => {
   );
 };
 
-
-// Get PDF buffer (used for inline viewing)
 export const getStudentPDFBuffer = async (studId, applicationId) => {
-  const application = await getStudApplicationById(applicationId);
-  if (!application) throw new Error("Application not found");
+  const record = await StudentPdf.findOne({ studId, applicationId });
 
-  return await generateStudentPDFBuffer(application);
+  if (!record?.pdfFile?.data) {
+    throw new Error("PDF not found for this application");
+  }
+
+  return record.pdfFile.data;
 };
+
 
 
 // Get saved PDF document from DB
