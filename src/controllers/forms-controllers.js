@@ -7,6 +7,7 @@ import {
   submitFormService,
   submitBulkFormsService,
   updateFormStatusService,
+  getFormsByApplicationService ,
   deleteFormService,
   getIsFormApplied
 } from "../services/forms-services.js";
@@ -138,5 +139,17 @@ export const isFormApplied = async (req, res) => {
     res.status(200).json({ status: "success", message: "Form application status fetched", data });
   } catch (err) {
     res.status(err.status || 500).json({ status: "failed", message: err.message });
+  }
+};
+export const getFormsByApplication = async (req, res) => {
+  try {
+    const { applicationId } = req.params;
+    const { status } = req.query;
+
+    const data = await getFormsByApplicationService(applicationId, status || null);
+    res.status(200).json({ status: "success", message: "Forms fetched for application", data });
+  } catch (err) {
+    console.error("Error in getFormsByApplication:", err);
+    res.status(err.status || 500).json({ status: "failed", message: err.message || "Internal server error" });
   }
 };

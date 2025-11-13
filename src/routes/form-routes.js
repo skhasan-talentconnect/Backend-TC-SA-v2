@@ -5,6 +5,7 @@ import {
   trackForm,
   getFormDetails,
   submitForm,
+  getFormsByApplication,
   submitBulkForms,
   updateFormStatus,
   deleteForm,
@@ -26,6 +27,7 @@ router.get("/student/:studId", getFormsByStudent);
  */
 router.get("/school/:schoolId", getFormsBySchool);
 
+router.get("/application/:applicationId", getFormsByApplication);
 /**
  * Track a specific form (used by both parent and school)
  */

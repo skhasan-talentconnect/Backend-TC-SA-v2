@@ -199,3 +199,22 @@ export const getIsFormApplied = async (studId, schoolId, applicationId = null) =
   if (!form) throw { status: 404, message: "No form application found for this student and school" };
   return { isApplied: true, formId: form._id, status: form.status };
 };
+
+
+export const getFormsByApplicationService = async (applicationId, status = null) => {
+  if (!applicationId) {
+    throw { status: 400, message: "applicationId is required" };
+  }
+
+  const query = { applicationId };
+  if (status) query.status = status;
+
+  const forms = await Form.find(query)
+    .populate({ path: 'applicationForm', select: 'pdfFile' })
+    .populate({ path: 'applicationId', select: 'name studId' })
+    .populate({ path: 'schoolId', select: 'name schoolMode genderType shifts state city' })
+    .populate({ path: 'studId', select: 'name email' })
+    .sort({ createdAt: -1 });
+
+  return forms;
+};
