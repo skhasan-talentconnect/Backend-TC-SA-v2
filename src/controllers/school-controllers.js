@@ -6,6 +6,9 @@ import {
   deleteSchoolService,
   uploadSchoolPhotosService,
   uploadSchoolVideoService,
+ getSchoolByAuthIdService,      // <-- service
+  addSchoolByAuthService,
+
   deleteSchoolPhotoService,
   deleteSchoolVideoService,
   getSchoolPhotoService,
@@ -21,6 +24,41 @@ import {
 } from '../services/school-services.js';
 import { toSchoolCardModels } from '../utils/utils.js';
 
+import mongoose from "mongoose";
+
+
+export const addSchoolByAuth = async (req, res) => {
+  try {
+    const { authId } = req.params;
+    if (!authId || !mongoose.Types.ObjectId.isValid(authId)) {
+      return res.status(400).json({ status: 'Failed', message: 'Invalid or missing authId in params' });
+    }
+
+    const payload = { ...req.body };
+    delete payload.authId; // prevent override
+
+    const savedSchool = await addSchoolByAuthService(authId, payload);
+
+    return res.status(201).json({ status: 'success', message: 'School added successfully', data: savedSchool });
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({ status: 'Failed', message: error.message });
+  }
+};
+
+// ---------- Controller: get schools by authId (GET /schools/auth/:authId) ----------
+export const getSchoolByAuthId = async (req, res) => {
+  try {
+    const { authId } = req.params;
+    if (!authId || !mongoose.Types.ObjectId.isValid(authId)) {
+      return res.status(400).json({ status: 'Failed', message: 'Invalid or missing authId in params' });
+    }
+
+    const schools = await getSchoolByAuthIdService(authId);
+    return res.status(200).json({ status: 'success', message: 'School fetched successfully', data: schools });
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({ status: 'Failed', message: error.message });
+  }
+};
 
 export const getSchoolLogo = async (req, res) => {
   try {

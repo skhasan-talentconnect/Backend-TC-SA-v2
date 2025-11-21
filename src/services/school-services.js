@@ -14,6 +14,8 @@ import Student from "../models/user-model.js";
 
 import { toSchoolCardModels } from '../utils/utils.js';
 import calculateScore from '../utils/school-score.js';
+import mongoose from "mongoose";
+
 
 export const getSchoolScoreByIdService = async (schoolId) => {
 const academics = await Academics.findOne({ schoolId });
@@ -39,6 +41,40 @@ const otherDetails = await OtherDetails.findOne({ schoolId });
   return {score};
 };
 
+export const getSchoolByAuthIdService = async (authId) => {
+  // ensure authId is ObjectId or valid string
+  if (!mongoose.Types.ObjectId.isValid(authId)) {
+    const err = new Error('Invalid authId');
+    err.statusCode = 400;
+    throw err;
+  }
+
+  const schools = await School.find({ authId: new mongoose.Types.ObjectId(authId) });
+  return schools;
+};
+
+// ---------- NEW: add school by auth ----------
+export const addSchoolByAuthService = async (authId, data) => {
+  if (!mongoose.Types.ObjectId.isValid(authId)) {
+    const err = new Error('Invalid authId');
+    err.statusCode = 400;
+    throw err;
+  }
+
+  // Optional: check if Auth exists (uncomment if you have Auth model)
+  // const Auth = await import('../models/auth-model.js'); // or static import at top
+  // const authExists = await Auth.findById(authId);
+  // if (!authExists) throw Object.assign(new Error('Auth user not found'), { statusCode: 404 });
+
+  const payload = { ...data, authId: new mongoose.Types.ObjectId(authId) };
+
+  // optional: prevent multiple schools per auth (uncomment if needed)
+  // const existing = await School.findOne({ authId: payload.authId });
+  // if (existing) throw Object.assign(new Error('School already exists for this authId'), { statusCode: 400 });
+
+  const created = await School.create(payload);
+  return created;
+};
 
 // Add school
 export const addSchoolService = async (data) => {

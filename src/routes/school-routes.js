@@ -1,4 +1,6 @@
 import express from "express";
+import mongoose from "mongoose";
+
 import ensureAuthenticated from "../middlewares/validate-token-middleware.js";
 import {addSchool, getSchoolById, getSchoolsByStatus, getNearbySchools, updateSchoolInfo, deleteSchool,uploadSchoolPhotos,
   uploadSchoolVideo,
@@ -10,6 +12,8 @@ getSchoolPhotos,
 getTotalSchoolsCount,
 uploadSchoolLogo,
 getSchoolLogo ,
+ addSchoolByAuth,
+  getSchoolByAuthId,
 getSchoolVideo,
     getStudentsCount,
 
@@ -78,6 +82,9 @@ router.get("/count", getStudentsCount);
 router.get('/schools/:id', getSchoolById);
 router.put('/schools/:id', updateSchoolInfo);
 router.delete('/schools/:id', deleteSchool);
+router.post('/schools/:authId', addSchoolByAuth);    // create and attach authId
+router.get('/schools/auth/:authId', getSchoolByAuthId);
+
 
 router.post('/:id/upload/photos', photoUpload.array('files', 4), uploadSchoolPhotos); // 5MB limit
 router.post('/:id/upload/video', videoUpload.single('file'), uploadSchoolVideo); // 20MB limit

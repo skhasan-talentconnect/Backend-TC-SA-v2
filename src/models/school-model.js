@@ -1,6 +1,11 @@
 import mongoose from 'mongoose';
 
 const SchoolSchema = new mongoose.Schema({
+  authId: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: 'auths',
+  required: true
+},
   name: { type: String, required: true },
   description: { type: String, required: true },
   board: {
