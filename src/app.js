@@ -12,6 +12,7 @@ import formRoutes from './routes/form-routes.js'
 import otpRoutes from "./routes/otp-routes.js";
 import notificationRoutes from './routes/notification-routes.js'
 import ChatbotRoutes from './routes/chatbot-routes.js';
+import paymentRoutes from './routes/payment-routes.js';
 import { errorHandler } from './middlewares/cloudinary-error-handler.js';
 import { getEntryPage } from './utils/entry-point.js';
 import { getPrivacyPage } from './utils/privacy.js';
@@ -44,6 +45,7 @@ app.use('/api/form', formRoutes);
 app.use('/api', openAIRoutes);
 app.use('/api/chatbot',ChatbotRoutes);
 app.use("/api/otp", otpRoutes);
+app.use("/api/payments", paymentRoutes);
 
 app.use(errorHandler);
 const PORT = process.env.PORT || 8080;
