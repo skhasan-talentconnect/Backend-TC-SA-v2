@@ -70,7 +70,7 @@ export const getFormDetailsService = async (formId) => {
  * @param {ObjectId} studId - account owner
  * @param {ObjectId|null} applicationId - StudentApplication _id (optional)
  */
-export const submitFormService = async (formId, schoolId, studId, applicationId = null) => {
+export const submitFormService = async (formId, schoolId, studId, applicationId = null, amount) => {
   // Validate student & school exist
   const student = await Student.findById(studId);
   if (!student) throw { status: 404, message: "Student not found" };
@@ -96,7 +96,7 @@ export const submitFormService = async (formId, schoolId, studId, applicationId 
   }
   if (existingForm) throw { status: 409, message: "Form already submitted to this school for this application" };
 
-  const form = await Form.create({ applicationForm: formId, schoolId, studId, applicationId: applicationId || null });
+  const form = await Form.create({ applicationForm: formId, schoolId, studId, applicationId: applicationId || null, amount });
 
   // Notification
   await createNotificationService({
