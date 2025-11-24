@@ -11,7 +11,7 @@ const StudentApplicationSchema = new mongoose.Schema({
   motherTongue: { type: String, required: true },
   placeOfBirth: { type: String, default: null }, 
   speciallyAbled: { type: Boolean, default: false }, 
-  standard:{type:String,required : true},
+  standard:{type:String,required : true,enum: ['KGs', 'Grade 1 - 5', 'Grade 6-10']},
   speciallyAbledType: {
   type: String,
   default: null

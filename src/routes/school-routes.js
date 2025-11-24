@@ -61,6 +61,7 @@ import {
 } from "../controllers/blog-controllers.js";
 import { 
   addAdmissionTimeline, 
+  getApplicationFee,
   getAdmissionTimelineById, 
   updateAdmissionTimeline 
 } from '../controllers/admission-timeline-controllers.js';
@@ -157,8 +158,10 @@ router.put('/schools/faculty/:id', updateFaculty);
 
 //admission-timeline
 router.post('/schools/admission-timeline/', addAdmissionTimeline);
+router.get('/schools/admission-timeline/application-fee/:schoolId/:admissionLevel', getApplicationFee);
 router.get('/schools/admission-timeline/:id', getAdmissionTimelineById);
 router.put('/schools/admission-timeline/:id', updateAdmissionTimeline);
+
 
 //admin
 router.post('/admin-login', adminLogin);
