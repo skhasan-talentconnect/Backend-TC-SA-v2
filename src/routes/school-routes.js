@@ -82,7 +82,7 @@ router.get("/count", getStudentsCount);
 router.get('/schools/:id', getSchoolById);
 router.put('/schools/:id', updateSchoolInfo);
 router.delete('/schools/:id', deleteSchool);
-router.post('/schools/:authId', addSchoolByAuth);    // create and attach authId
+router.post('/schools/auth/:authId', addSchoolByAuth);    // create and attach authId
 router.get('/schools/auth/:authId', getSchoolByAuthId);
 
 
