@@ -67,10 +67,11 @@ export const submitForm = async (req, res) => {
   try {
     const { formId, schoolId, studId } = req.params;
     const applicationId = req.body.applicationId || req.query.applicationId || null;
-    const amount = req.body.amount || null;
+    let amount = req.body.amount || null;
 
-    if(!amount) {
-      return res.status(400).json({ status: "failed", message: "Amount is required to submit the form." });
+    if(amount === undefined || amount === null) {
+      amount = 0;
+      // return res.status(400).json({ status: "failed", message: "Amount is required to submit the form." });
     }
 
     const data = await submitFormService(formId, schoolId, studId, applicationId, amount);
