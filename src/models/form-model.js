@@ -17,10 +17,31 @@ const FormSchema = new mongoose.Schema({
     ref: 'StudentApplication',
     default: null,
   },
-  
   applicationForm: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'pdfs',
+    required: true,
+  },
+  
+  payment: {
+    type: String,
+    enum: ['Paid', 'Unpaid'],
+    default: 'Unpaid',
+  },
+
+  paymentInfo: {
+    orderId: { type: String, default: null },
+    paymentId: { type: String, default: null },
+    signature: { type: String, default: null },
+    status: {
+      type: String,
+      enum: ['created', 'authorized', 'captured', 'failed'],
+      default: 'created'
+    }
+  },
+
+  amount: {
+    type: Number,
     required: true,
   },
   status: {
@@ -31,7 +52,7 @@ const FormSchema = new mongoose.Schema({
   interviewNote: {
     type: String,
     default: null
-  }
+  },
 }, { timestamps: true });
 
 const Form = mongoose.model('forms', FormSchema);

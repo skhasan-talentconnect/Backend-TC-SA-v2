@@ -2,67 +2,69 @@ import express from "express";
 import mongoose from "mongoose";
 
 import ensureAuthenticated from "../middlewares/validate-token-middleware.js";
-import {addSchool, getSchoolById, getSchoolsByStatus, getNearbySchools, updateSchoolInfo, deleteSchool,uploadSchoolPhotos,
+import {
+  addSchool, getSchoolById, getSchoolsByStatus, getNearbySchools, updateSchoolInfo, deleteSchool, uploadSchoolPhotos,
   uploadSchoolVideo,
   deleteSchoolPhoto,
   deleteSchoolVideo,
-getSchoolPhoto,
-getSchoolVideos,
-getSchoolPhotos,
-getTotalSchoolsCount,
-uploadSchoolLogo,
-getSchoolLogo ,
- addSchoolByAuth,
+  getSchoolPhoto,
+  getSchoolVideos,
+  getSchoolPhotos,
+  getTotalSchoolsCount,
+  uploadSchoolLogo,
+  getSchoolLogo,
+  addSchoolByAuth,
   getSchoolByAuthId,
-getSchoolVideo,
-    getStudentsCount,
+  getSchoolVideo,
+  getStudentsCount,
 
 } from '../controllers/school-controllers.js';
-import { 
-  addTechnologyAdoption, 
-  getTechnologyAdoptionById, 
-  updateTechnologyAdoption 
+import {
+  addTechnologyAdoption,
+  getTechnologyAdoptionById,
+  updateTechnologyAdoption
 } from '../controllers/technology-adoption-controllers.js';
-import { 
-  addInternationalExposure, 
-  getInternationalExposureById, 
-  updateInternationalExposure 
+import {
+  addInternationalExposure,
+  getInternationalExposureById,
+  updateInternationalExposure
 } from '../controllers/international-exposure-controllers.js';
-import { 
-  addSafetyAndSecurity, 
-  getSafetyAndSecurityById, 
-  updateSafetyAndSecurity 
+import {
+  addSafetyAndSecurity,
+  getSafetyAndSecurityById,
+  updateSafetyAndSecurity
 } from '../controllers/safety-security-controllers.js';
-import {addAmenities, getAmenitiesById, updateAmenities} from '../controllers/amenities-controllers.js';
-import {addActivities, getActivitiesById, updateActivities} from '../controllers/activities-controllers.js';
-import {addAlumni, getAlumniBySchool, deleteAlumniBySchool, updateAlumniBySchool} from '../controllers/alumni-controllers.js';
-import {searchSchool} from '../controllers/search-controllers.js';
+import { addAmenities, getAmenitiesById, updateAmenities } from '../controllers/amenities-controllers.js';
+import { addActivities, getActivitiesById, updateActivities } from '../controllers/activities-controllers.js';
+import { addAlumni, getAlumniBySchool, deleteAlumniBySchool, updateAlumniBySchool } from '../controllers/alumni-controllers.js';
+import { searchSchool } from '../controllers/search-controllers.js';
 import { compareSchools } from "../controllers/compare-controllers.js";
-import {getSchoolByFeeRange, getSchoolByShift } from '../controllers/filter-controllers.js';
+import { getSchoolByFeeRange, getSchoolByShift } from '../controllers/filter-controllers.js';
 import { getSchoolCardData } from "../controllers/card-controllers.js";
 import { addInfrastructure, getInfrastructureById, updateInfrastructure } from '../controllers/infrastructure-controllers.js';
 import { addOtherDetails, getOtherDetailsById, updateOtherDetails } from '../controllers/other-detail-controller.js';
-import { 
-  addFeesAndScholarships, 
-  getFeesAndScholarshipsById, 
-  updateFeesAndScholarships 
+import {
+  addFeesAndScholarships,
+  getFeesAndScholarshipsById,
+  updateFeesAndScholarships
 } from '../controllers/fees-scholarship-controllers.js';
-import { 
-  addAcademics, 
-  getAcademicsById, 
-  updateAcademics 
+import {
+  addAcademics,
+  getAcademicsById,
+  updateAcademics
 } from '../controllers/academic-controllers.js';
-import {addSupport, getSupportByStudId, getSupportBySupId ,deleteSupportBySupId} from '../controllers/support-controllers.js';
+import { addSupport, getSupportByStudId, getSupportBySupId, deleteSupportBySupId } from '../controllers/support-controllers.js';
 import { predictSchools } from "../controllers/predictor-controllers.js";
 import {
   createBlog,
   getAllBlogs,
   getBlogById,
 } from "../controllers/blog-controllers.js";
-import { 
-  addAdmissionTimeline, 
-  getAdmissionTimelineById, 
-  updateAdmissionTimeline 
+import {
+  addAdmissionTimeline,
+  getApplicationFee,
+  getAdmissionTimelineById,
+  updateAdmissionTimeline
 } from '../controllers/admission-timeline-controllers.js';
 import {
   addFaculty,
@@ -70,7 +72,7 @@ import {
   updateFaculty
 } from '../controllers/faculty-controllers.js';
 import { adminLogin } from '../controllers/admin-controllers.js';
-import { photoUpload, videoUpload,logoUpload } from '../../config/multer.js';
+import { photoUpload, videoUpload, logoUpload } from '../../config/multer.js';
 
 const router = express.Router();
 
@@ -80,9 +82,9 @@ router.get('/schools/status/:status', getSchoolsByStatus);
 router.get('/schools/nearby', getNearbySchools);
 router.get("/count", getStudentsCount);
 router.get('/schools/:id', getSchoolById);
-router.put('/schools/:id', updateSchoolInfo);
+router.put('/schools/auth/:id', updateSchoolInfo);
 router.delete('/schools/:id', deleteSchool);
-router.post('/schools/:authId', addSchoolByAuth);    // create and attach authId
+router.post('/schools/auth/:authId', addSchoolByAuth);
 router.get('/schools/auth/:authId', getSchoolByAuthId);
 
 
@@ -157,8 +159,10 @@ router.put('/schools/faculty/:id', updateFaculty);
 
 //admission-timeline
 router.post('/schools/admission-timeline/', addAdmissionTimeline);
+router.get('/schools/admission-timeline/application-fee/:schoolId/:admissionLevel', getApplicationFee);
 router.get('/schools/admission-timeline/:id', getAdmissionTimelineById);
 router.put('/schools/admission-timeline/:id', updateAdmissionTimeline);
+
 
 //admin
 router.post('/admin-login', adminLogin);
@@ -173,8 +177,8 @@ router.get("/card/:id", getSchoolCardData);
 
 router.post('/support', ensureAuthenticated, addSupport);
 router.get('/support/:studId', getSupportByStudId);
-router.get('/support-id/:supportId', getSupportBySupId);  
-router.delete('/support/:supportId',ensureAuthenticated, deleteSupportBySupId);
+router.get('/support-id/:supportId', getSupportBySupId);
+router.delete('/support/:supportId', ensureAuthenticated, deleteSupportBySupId);
 
 
 router.get('/count/all', getTotalSchoolsCount);
