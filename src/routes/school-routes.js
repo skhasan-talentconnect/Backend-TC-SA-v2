@@ -82,7 +82,7 @@ router.get('/schools/status/:status', getSchoolsByStatus);
 router.get('/schools/nearby', getNearbySchools);
 router.get("/count", getStudentsCount);
 router.get('/schools/:id', getSchoolById);
-router.put('/schools/auth/:id', updateSchoolInfo);
+router.put('/schools/:id', updateSchoolInfo);
 router.delete('/schools/:id', deleteSchool);
 router.post('/schools/auth/:authId', addSchoolByAuth);
 router.get('/schools/auth/:authId', getSchoolByAuthId);
