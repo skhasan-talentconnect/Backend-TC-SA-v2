@@ -38,14 +38,14 @@ export const registerUserService = async ({ email, password, userType, authProvi
     }
   }
 
-  const newAuth = new Auth({ email, password, userType, authProvider, isEmailVerified: true, deviceToken });
+  const newAuth = new Auth({ email, password, userType, authProvider, isEmailVerified: false, deviceToken });
   await newAuth.save();
 
   const token = jwt.sign({ id: newAuth._id, email: newAuth.email }, process.env.SECRET, {
     expiresIn: '15m',
   });
 
-  // await sendVerificationEmail({ email, token });
+  await sendVerificationEmail({ email, token });
   return { email, token };
 };
 
