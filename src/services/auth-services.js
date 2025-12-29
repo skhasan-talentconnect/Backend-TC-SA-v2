@@ -45,7 +45,7 @@ export const registerUserService = async ({ email, password, userType, authProvi
     expiresIn: '15m',
   });
 
-  await sendVerificationEmail({ email, token });
+  // await sendVerificationEmail({ email, token });
   return { email, token };
 };
 
