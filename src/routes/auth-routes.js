@@ -1,6 +1,6 @@
 import express from "express";
 import { loginUser, registerUser, resetPassword, verifyEmail, sendOtp, verifyOtpAndResetPassword, getAuth } from "../controllers/auth-controllers.js";
-import { googleAuth } from "../controllers/google-auth-controllers.js";
+import { googleAuth, googleWebAuth } from "../controllers/google-auth-controllers.js";
 import ensureAuthenticated from "../middlewares/validate-token-middleware.js";
 const router = express.Router();
 
@@ -15,6 +15,8 @@ router.post('/forgot-password/verify-otp', verifyOtpAndResetPassword);
 router.post('/reset-password', ensureAuthenticated, resetPassword);
 
 router.post('/google', googleAuth);
+
+router.post('/google-web', googleWebAuth);
 
 router.get('/verify-email/:token', verifyEmail);
 
