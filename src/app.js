@@ -25,7 +25,11 @@ const app = express();
 // ✅ Middleware to handle form-data correctly
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({
+  origin: 'https://synzy.in',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true,
+}));
 
 
 //Routes for the API calls
