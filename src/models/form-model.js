@@ -46,7 +46,7 @@ const FormSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['Pending', 'Reviewed', 'Accepted', 'Rejected', 'Interview'],
+    enum: ['Pending', 'Reviewed', 'Accepted', 'Rejected', 'Interview','WrittenExam'],
     default: 'Pending',
   },
   interviewNote: {
