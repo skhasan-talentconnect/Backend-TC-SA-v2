@@ -140,7 +140,9 @@ export const submitBulkFormsService = async (studId, forms, formId, applicationI
  */
 export const updateFormStatusService = async (formId, status, note) => {
   const updateData = { status };
-  if (status === 'Interview' && note) updateData.interviewNote = note;
+  if ((status === 'Interview' || status === 'WrittenExam') && note) {
+    updateData.interviewNote = note;
+  }
 
   const form = await Form.findByIdAndUpdate(formId, updateData, { new: true });
   if (!form) throw { status: 404, message: "Form not found" };
@@ -167,6 +169,14 @@ export const updateFormStatusService = async (formId, status, note) => {
         body: `You've been invited for an interview at ${school.name}. Note: "${note}"`,
         authId: student.authId,
         notificationType: 'Interview'
+      });
+      break;
+    case 'WrittenExam':
+      await createNotificationService({
+        title: 'Written Exam Invitation',
+        body: `You've been invited for a Written Exam at ${school.name}. Note: "${note}"`,
+        authId: student.authId,
+        notificationType: 'WrittenExam'
       });
       break;
     default:
