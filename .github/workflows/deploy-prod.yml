@@ -20,5 +20,5 @@ jobs:
             cd synzy/Backend-TC-SA-v2
             git pull origin hostinger-prod
             npm i
-            pm2 restart synzy-api
+            pm2 reload school-api
             pm2 save
