@@ -25,7 +25,29 @@ const app = express();
 // ✅ Middleware to handle form-data correctly
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+const allowedOrigins = [
+  "http://localhost:5173",   // Vite dev server
+  "http://127.0.0.1:5173",
+  "https://synzy.in",
+  "https://www.synzy.in",
+  "https://school.synzy.in",
+  "https://college.synzy.in"
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // allow server-to-server / postman
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("CORS not allowed for this origin"));
+      }
+    },
+    credentials: true,
+  })
+);
 
 
 //Routes for the API calls
