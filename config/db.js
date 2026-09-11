@@ -7,11 +7,14 @@ import { seedDatabase } from "../src/utils/seeder.js";
 dotenv.config();
 
 const mongodbUrl = process.env.MONGODB_URL || config.get("mongodb.url");
+const dbName = process.env.DB_NAME || 'synzy-prod';
 
 const connectDB = async () => {
     try {
-        await mongoose.connect(mongodbUrl);
-        console.log("MongoDB connected!");
+        await mongoose.connect(mongodbUrl, {
+            dbName: dbName
+        });
+        console.log(`MongoDB connected to database: ${mongoose.connection.name}`);
         ///TODO: REMOVE
         //seedDatabase();
     } catch (error) {
